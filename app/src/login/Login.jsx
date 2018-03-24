@@ -53,24 +53,22 @@ class Login extends Component {
               {getFieldDecorator('email', {
                   rules: [{
                     required: true,
-                    message: 'E-mail is required',
+                    message: 'e-mail is required',
                   }],
-                })(<Input placeholder="Email" />)}
+                })(<Input placeholder="email" />)}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
                   rules: [{
                     required: true,
-                    message: 'Password is required',
+                    message: 'password is required',
                   }],
-                })(<Input placeholder="password" />)}
+                })(<Input placeholder="password" type="password" />)}
             </FormItem>
             <FormItem>
               <Button htmlType="submit">
                     Log in
               </Button>
-            </FormItem>
-            <FormItem>
               <Link href="/" to="/signup">
                     Don&#39;t have an account? Sign up.
               </Link>
