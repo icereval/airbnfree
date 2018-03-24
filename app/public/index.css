@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+  background-color: #f9fbfd;
+}
+
+.ant-btn:hover {
+  color: #ff5a5f;
+  border-color: #ff5a5f;
+}
+
+.ant-btn:focus {
+  color: #ff5a5f;
+  border-color: #ff5a5f;
+}
+
+.ant-input:hover {
+  border-color: #ff5a5f;
+}
+
+.ant-input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 90, 95, 0.2);
+  border-color: #ff5a5f;
+}
