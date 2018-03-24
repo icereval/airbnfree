@@ -7,6 +7,7 @@ import DashboardStyles from './dashboard.style';
 import DashboardTopbar from '../topbar/DashboardTopbar';
 import Profile from '../profile/Profile';
 import DashboardLoader from '../loading/DashboardLoader';
+import HostDashboard from '../host/HostDashboard';
 import * as UserActions from '../user/userActions';
 
 class Dashboard extends Component {
@@ -31,11 +32,9 @@ class Dashboard extends Component {
     return (
       <DashboardStyles>
         {this.state.loading ? <DashboardLoader /> :
-        <div>
-          <DashboardTopbar type={user.loaded.type} />
-          <div>Dashboard</div>
-        </div>}
+        <DashboardTopbar type={user.loaded.type} />}
         <Route path="/dashboard/profile" component={Profile} />
+        <Route path="/dashboard/host" component={HostDashboard} />
       </DashboardStyles>
     );
   }
