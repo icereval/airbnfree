@@ -24,7 +24,8 @@ export class UsersController extends Controller {
 
             return new JsonResponse({
                 id: user.id,
-                fullname: user.fullname,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 active: user.active,
             });
         } catch (err) {
@@ -45,25 +46,28 @@ export class UsersMeController extends Controller {
 
         return new JsonResponse({
             id: user.id,
-            fullname: user.fullname,
+            firstName: user.firstName,
+            lastName: user.lastName,
             active: user.active,
         });
     }
 
-    protected async put<IUserProfile>(): Promise<IHttpResponse> {
+    protected async put(): Promise<IHttpResponse> {
         const session = <Session>this.request.auth.credentials;
-        const { fullname, active, password } = <any>this.request.payload;
+        const { firstName, lastName, active, password } = <any>this.request.payload;
 
         const user = await User.update(<User>{
             id: session.user.id,
-            fullname: fullname,
-            active: active,
-            password: password,
+            firstName,
+            lastName,
+            active,
+            password,
         });
 
         return new JsonResponse({
             id: user.id,
-            fullname: user.fullname,
+            firstName: user.firstName,
+            lastName: user.lastName,
             active: user.active,
         });
     }

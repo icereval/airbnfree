@@ -1,31 +1,34 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import * as TypeOrm from 'typeorm';
+import { getConnection, Entity, Column, Index, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import config from '../../config';
 import logger from '../../logging';
 
 
-@TypeOrm.Entity()
-@TypeOrm.Index('username_unique', (user: User) => [ user.username ], { unique: true })
+@Entity()
+@Index('username_unique', (user: User) => [ user.username ], { unique: true })
 export class User {
 
-    @TypeOrm.PrimaryGeneratedColumn({ type: 'int' })
+    @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @TypeOrm.Column('text')
+    @Column('text')
     username: string;
 
-    @TypeOrm.Column('text')
+    @Column('text')
     password: string;
 
-    @TypeOrm.Column('text')
-    fullname: string;
+    @Column('text')
+    firstName: string;
 
-    @TypeOrm.Column('boolean')
+    @Column('text')
+    lastName: string;
+
+    @Column('boolean')
     active: boolean;
 
     static async create(user: User): Promise<User> {
-        const repo = TypeOrm.getConnection().getRepository(User);
+        const repo = getConnection().getRepository(User);
 
         const exists = await repo.count({ username: user.username });
         if (exists) {
@@ -42,7 +45,7 @@ export class User {
     }
 
     static async update(user: User): Promise<User> {
-        const repo = TypeOrm.getConnection().getRepository(User);
+        const repo = getConnection().getRepository(User);
 
         const queryBuilder = await repo.createQueryBuilder('user')
             .where('user.id = :id')
@@ -64,7 +67,7 @@ export class User {
     }
 
     static async verify(username: string, password: string): Promise<User> {
-        return await TypeOrm.getConnection().transaction(async transactionalEntityManager => {
+        return await getConnection().transaction(async transactionalEntityManager => {
             const repo = transactionalEntityManager.getRepository(User);
 
             const user = await repo.findOne({ username });
@@ -99,7 +102,7 @@ export class User {
     }
 
     private static encrypt(data: string): string {
-        let cipher = crypto.createCipher('aes256', config.get('app:encryption_password'));
+        const cipher = crypto.createCipher('aes256', config.get('app:encryption_password'));
 
         let encrypted = cipher.update(data, 'utf8', 'binary');
         encrypted += cipher.final('binary');
@@ -108,7 +111,7 @@ export class User {
     }
 
     private static decrypt(data: string): string {
-        let decipher = crypto.createDecipher('aes256', config.get('app:encryption_password'));
+        const decipher = crypto.createDecipher('aes256', config.get('app:encryption_password'));
 
         let decrypted = decipher.update(data, 'binary', 'utf8');
         decrypted += decipher.final('utf8');

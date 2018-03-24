@@ -17,12 +17,13 @@ export class AuthLoginController extends Controller {
     protected async post(): Promise<IHttpResponse> {
         const { username, password } = <any>this.request.params;
 
-        let user: User;
-        try {
-            user = await User.verify(username, password);
-        } catch (e) {
-            throw Boom.unauthorized();
-        }
+        const user = await (async () => {
+            try {
+                return await User.verify(username, password);
+            } catch (e) {
+                throw Boom.unauthorized();
+            }
+        })();
 
         if (!user.active) {
             throw Boom.unauthorized();
@@ -33,7 +34,8 @@ export class AuthLoginController extends Controller {
 
         return new JsonResponse({
             id: user.id,
-            fullname: user.fullname,
+            firstname: user.firstName,
+            lastName: user.lastName,
             active: user.active,
         });
     }
@@ -59,12 +61,13 @@ export class AuthSignUpController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { username, password, fullname } = <any>this.request.params;
+        const { username, password, firstName, lastName } = <any>this.request.params;
 
         const user = await User.create(<User>{
             username,
             password,
-            fullname,
+            firstName,
+            lastName,
         });
 
         const session = await Session.create(user);
@@ -72,7 +75,8 @@ export class AuthSignUpController extends Controller {
 
         return new JsonResponse({
             id: user.id,
-            fullname: user.fullname,
+            firstName: user.firstName,
+            lastName: user.lastName,
             active: user.active,
         });
     }

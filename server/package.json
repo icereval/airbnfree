@@ -16,7 +16,7 @@
     "start-old": "ts-node src/index.ts",
     "build": "tsc",
     "watch": "tsc -w",
-    "migrate": "ts-node node_modules/.bin/typeorm"
+    "orm": "ts-node node_modules/.bin/typeorm"
   },
   "devDependencies": {
     "@types/bcrypt": "^1.0.0",

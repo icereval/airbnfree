@@ -61,7 +61,6 @@ export abstract class Controller {
     }
 
     protected async handleInternal(): Promise<Hapi.Lifecycle.ReturnValue> {
-        let promise: Promise<IHttpResponse>;
         const method = this.request.method;
 
         try {
