@@ -16,16 +16,20 @@ export class UsersController extends Controller {
         const id = this.request.params.id;
 
         const repo = TypeOrm.getConnection().getRepository(User);
-        const user = await repo.findOne({ where: { id, active: true } });
-        if (!user) {
-            throw Boom.notFound();
-        }
+        try {
+            const user = await repo.findOne({ where: { id, active: true } });
+            if (!user) {
+                throw Boom.notFound();
+            }
 
-        return new JsonResponse({
-            id: user.id,
-            fullname: user.fullname,
-            active: user.active,
-        });
+            return new JsonResponse({
+                id: user.id,
+                fullname: user.fullname,
+                active: user.active,
+            });
+        } catch (err) {
+            logger.error(err);
+        }
     }
 }
 

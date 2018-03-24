@@ -66,15 +66,15 @@ export abstract class Controller {
 
         try {
             if (method === 'delete') {
-                await this.delete();
+                return await this.delete();
             } else if (method === 'get') {
-                await this.get();
+                return await this.get();
             } else if (method === 'patch') {
-                await this.patch();
+                return await this.patch();
             } else if (method === 'post') {
-                await this.post();
+                return await this.post();
             } else if (method === 'put') {
-                await this.put();
+                return await this.put();
             } else {
                 throw Boom.notImplemented();
             }
