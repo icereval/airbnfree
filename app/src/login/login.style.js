@@ -14,6 +14,12 @@ const LoginStyles = styled.div`
     border: 1px solid #dbdbdb;
   }
 
+  .login-box a {
+    color: #ff5a5f;
+    padding-left: 10px;
+    padding-right: 30px;
+  }
+
   .login-header {
     display: flex;
     align-items: center;
@@ -23,6 +29,7 @@ const LoginStyles = styled.div`
 
   .login-header a {
     display: flex;
+    padding-left: 0;
   }
 
   .login-header a:focus {
@@ -37,10 +44,6 @@ const LoginStyles = styled.div`
     padding-left: 10px;
     font-size: 1.9em;
     font-weight: 200;
-  }
-
-  .login-box a {
-    color: #ff5a5f;
   }
 `;
 
