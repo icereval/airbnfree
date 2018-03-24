@@ -5,6 +5,9 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "lib": [
+      "es2017"
+    ],
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noImplicitAny": false,
@@ -15,10 +18,7 @@
         "src/types/*"
       ]
     },
-    "sourceMap": false,
-    "lib": [
-      "es2017"
-    ],
+    "sourceMap": true,
     "types": [
       "node"
     ],
