@@ -39,6 +39,11 @@ const TopbarStyles = styled.div`
     color: #909aaf;
   }
 
+  .topbar-links a:focus {
+    text-decoration: none;
+    border-bottom: 2px solid #ff5a5f;
+  }
+
   .topbar-links a:hover {
     border-bottom: 2px solid #ff5a5f;
     cursor: pointer;

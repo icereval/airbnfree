@@ -6,6 +6,7 @@ import {
 import Home from '../home/Home';
 import Login from '../login/Login';
 import Signup from '../signup/Signup';
+import Dashboard from '../dashboard/Dashboard';
 
 const App = () => (
   <Router>
@@ -13,6 +14,7 @@ const App = () => (
       <Route exact path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Route path="/dashboard" component={Dashboard} />
     </div>
   </Router>
 );

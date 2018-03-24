@@ -22,7 +22,7 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Log in!');
+        this.props.history.push('/dashboard');
       }
     });
   }
@@ -84,6 +84,9 @@ Login.propTypes = {
   form: PropTypes.shape({
     getFieldDecorator: PropTypes.func,
     validateFieldsAndScroll: PropTypes.func,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }).isRequired,
 };
 

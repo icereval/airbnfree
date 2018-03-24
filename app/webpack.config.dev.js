@@ -9,13 +9,14 @@ module.exports = {
     path.join(__dirname, 'src/index.jsx'),
   ],
   output: {
-    path: path.join(__dirname, 'public'),
+    publicPath: '/dist/',
+    path: path.join(__dirname, 'public/dist/'),
     filename: 'bundle.js',
   },
   devServer: {
-    contentBase: 'public',
     port: 2500,
     historyApiFallback: true,
+    contentBase: [path.join(__dirname, 'public')],
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
