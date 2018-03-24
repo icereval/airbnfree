@@ -31,7 +31,7 @@ export default class Routes {
 
         server.route({ method: [ 'GET' ], path: '/hosts', handler: HostListController.handler, options: { auth: { mode: 'try' } } });
         server.route({ method: [ 'GET' ], path: '/hosts/{id}', handler: HostController.handler, options: {
-            auth: { mode: 'try' },
+            auth: { mode: 'try' },  // required
             validate: {
                 params: {
                     id: Joi.number().required(),
@@ -39,7 +39,7 @@ export default class Routes {
             },
         }});
         server.route({ method: [ 'GET' ], path: '/hosts/{id}/locations', handler: HostLocationListController.handler, options: {
-            auth: { mode: 'try' },
+            auth: { mode: 'try' },  // required
             validate: {
                 params: {
                     id: Joi.number().required(),
@@ -49,7 +49,7 @@ export default class Routes {
 
         server.route({ method: [ 'GET' ], path: '/locations', handler: LocationListController.handler, options: { auth: { mode: 'try' } } });
         server.route({ method: [ 'GET' ], path: '/locations/{id}', handler: LocationController.handler, options: {
-            auth: { mode: 'try' },
+            auth: { mode: 'try' },  // required
             validate: {
                 params: {
                     id: Joi.number().required(),
@@ -72,7 +72,7 @@ export default class Routes {
             },
         }});
         server.route({ method: [ 'GET' ], path: '/users/{id}', handler: UserController.handler, options: {
-            auth: { mode: 'required' },
+            auth: { mode: 'try' },  // required
             validate: {
                 params: {
                     id: Joi.number().required(),
