@@ -13,8 +13,8 @@
             "error": false,
             "schema": false
         },
-        "entities": ["./dist/models/entity/*.js"],
-        "migrations": ["./migrations/*.js"],
-        "subscribers": ["./dist/models/subscriber/*.js"]
+        "entities": ["./dist/src/models/entity/*.js"],
+        "migrations": ["./dist/migrations/*.js"],
+        "subscribers": ["./dist/src/models/subscriber/*.js"]
     }
 ]

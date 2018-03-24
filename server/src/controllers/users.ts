@@ -6,6 +6,16 @@ import Session from '../models/entity/session';
 import User from '../models/entity/user';
 import logger from '../logging';
 
+function UserSerializer(user: User): IHttpResponse {
+    return new JsonResponse({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        active: user.active,
+        type: user.type,
+    });
+}
+
 export class UsersController extends Controller {
 
     static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
@@ -22,12 +32,7 @@ export class UsersController extends Controller {
                 throw Boom.notFound();
             }
 
-            return new JsonResponse({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                active: user.active,
-            });
+            return UserSerializer(user);
         } catch (err) {
             logger.error(err);
         }
@@ -44,32 +49,21 @@ export class UsersMeController extends Controller {
         const session = <Session>this.request.auth.credentials;
         const user = session.user;
 
-        return new JsonResponse({
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            active: user.active,
-        });
+        return UserSerializer(user);
     }
 
     protected async put(): Promise<IHttpResponse> {
         const session = <Session>this.request.auth.credentials;
-        const { firstName, lastName, active, password } = <any>this.request.payload;
+        const { firstName, lastName, password } = <any>this.request.payload;
 
         const user = await User.update(<User>{
             id: session.user.id,
             firstName,
             lastName,
-            active,
             password,
         });
 
-        return new JsonResponse({
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            active: user.active,
-        });
+        return UserSerializer(user);
     }
 }
 

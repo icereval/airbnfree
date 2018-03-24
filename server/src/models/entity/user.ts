@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { getConnection, Entity, Column, Index, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { IsIn } from 'class-validator';
 import config from '../../config';
 import logger from '../../logging';
 
@@ -18,14 +19,18 @@ export class User {
     @Column('text')
     password: string;
 
-    @Column('text')
+    @Column('text', { name: 'firstname' })
     firstName: string;
 
-    @Column('text')
+    @Column('text', { name: 'lastname' })
     lastName: string;
 
     @Column('boolean')
     active: boolean;
+
+    @Column('text')
+    @IsIn(['casemanager', 'host', 'client'])
+    type: string;
 
     static async create(user: User): Promise<User> {
         const repo = getConnection().getRepository(User);
