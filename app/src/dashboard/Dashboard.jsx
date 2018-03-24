@@ -21,8 +21,15 @@ class Dashboard extends Component {
 
   componentWillMount() {
     this.props.getUser().then((user) => {
+      const {
+        history,
+      } = this.props;
+
       this.setState({ loading: false });
-      this.props.history.push(`/dashboard/${user.type}`);
+      if (history.location.pathname === '/dashboard/' ||
+          history.location.pathname === '/dashboard') {
+        history.push(`/dashboard/${user.type}`);
+      }
     });
   }
 
@@ -50,6 +57,9 @@ Dashboard.propTypes = {
   getUser: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
   }).isRequired,
 };
 

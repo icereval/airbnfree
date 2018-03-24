@@ -16,15 +16,29 @@ export function userEventError(type, error) {
 
 export function getUser() {
   return (dispatch) => {
-    const user = {
-      type: 'host',
+    const response = {
+      away: false,
+      description: 'tbd...',
+      id: 1,
+      name: 'Host 1',
+      photo: 'photo...',
+      user: {
+        active: true,
+        email: 'fakehost@test.com',
+        firstName: 'Fake',
+        id: 2,
+        lastName: 'Host',
+        photo: 'photo...',
+        type: 'host',
+      },
     };
+
     dispatch(userEvent(types.GET_USER_REQUEST));
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        dispatch(userEvent(types.GET_USER_SUCCESS, user));
-        resolve(user);
+        dispatch(userEvent(types.GET_USER_SUCCESS, response.user));
+        resolve(response.user);
       }, 2000);
     });
   };
