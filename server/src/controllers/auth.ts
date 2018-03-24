@@ -6,16 +6,7 @@ import { Session } from '../models/entity/session';
 import { User } from '../models/entity/user';
 import logger from '../logging';
 import config from '../config';
-
-function AuthUserSerializer(user: User): IHttpResponse {
-    return new JsonResponse({
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        active: user.active,
-        type: user.type,
-    });
-}
+import { UserSerializer } from './users';
 
 export class AuthLoginController extends Controller {
 
@@ -41,7 +32,7 @@ export class AuthLoginController extends Controller {
         const session = await Session.create(user);
         (<any>this.request).cookieAuth.set({ id: session.id });
 
-        return AuthUserSerializer(user);
+        return new JsonResponse(UserSerializer(user));
     }
 }
 
@@ -77,6 +68,6 @@ export class AuthSignUpController extends Controller {
         const session = await Session.create(user);
         (<any>this.request).cookieAuth.set({ id: session.id });
 
-        return AuthUserSerializer(user);
+        return new JsonResponse(UserSerializer(user));
     }
 }

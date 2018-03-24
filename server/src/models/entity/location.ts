@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { getConnection, Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { getConnection, Entity, Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsInt } from 'class-validator';
 import { Host } from './host';
 import config from '../../config';
@@ -33,7 +33,7 @@ export class Location {
     @IsBoolean()
     active: boolean;
 
-    @OneToOne(type => Host)
+    @ManyToOne(type => Host, host => host.locations)
     @JoinColumn()
     host: Host;
 

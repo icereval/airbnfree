@@ -1,7 +1,9 @@
 import * as Hapi from 'hapi';
 import * as Joi from 'joi';
 import { AuthLoginController, AuthLogoutController, AuthSignUpController } from './controllers/auth';
-import { UsersController, UsersMeController } from './controllers/users';
+import { HostController, HostListController, HostLocationListController } from './controllers/hosts';
+import { LocationController, LocationListController } from './controllers/locations';
+import { UserController, UserMeController } from './controllers/users';
 
 export default class Routes {
 
@@ -27,8 +29,36 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'GET' ], path: '/users/me', handler: UsersMeController.handler, options: { auth: { mode: 'required' } } });
-        server.route({ method: [ 'PUT' ], path: '/users/me', handler: UsersMeController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/hosts', handler: HostListController.handler, options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/hosts/{id}', handler: HostController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
+        server.route({ method: [ 'GET' ], path: '/hosts/{id}/locations', handler: HostLocationListController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
+
+        server.route({ method: [ 'GET' ], path: '/locations', handler: LocationListController.handler, options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/locations/{id}', handler: LocationController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
+
+        server.route({ method: [ 'GET' ], path: '/users/me', handler: UserMeController.handler, options: { auth: { mode: 'required' } } });
+        server.route({ method: [ 'PUT' ], path: '/users/me', handler: UserMeController.handler, options: {
             auth: { mode: 'required' },
             validate: {
                 payload: Joi.object({
@@ -41,7 +71,8 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'GET' ], path: '/users/{id}', handler: UsersController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/users/{id}', handler: UserController.handler, options: {
+            auth: { mode: 'required' },
             validate: {
                 params: {
                     id: Joi.number().required(),

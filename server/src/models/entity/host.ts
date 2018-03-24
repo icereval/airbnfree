@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { getConnection, Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { getConnection, Entity, Column, JoinColumn, OneToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsNotEmpty } from 'class-validator';
+import { Location } from './location';
 import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
@@ -32,6 +33,9 @@ export class Host {
     @OneToOne(type => User)
     @JoinColumn()
     user: User;
+
+    @OneToMany(type => Location, location => location.host)
+    locations: Location[];
 
     static async create(host: Host): Promise<Host> {
         const repo = getConnection().getRepository(Host);

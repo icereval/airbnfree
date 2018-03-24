@@ -6,8 +6,8 @@ import { Session } from '../models/entity/session';
 import { User } from '../models/entity/user';
 import logger from '../logging';
 
-function UserSerializer(user: User): IHttpResponse {
-    return new JsonResponse({
+export function UserSerializer(user: User): Object {
+    const obj = {
         id: user.id,
         email: user.email,
         firstName: user.firstName,
@@ -15,13 +15,15 @@ function UserSerializer(user: User): IHttpResponse {
         photo: user.photo,
         active: user.active,
         type: user.type,
-    });
+    };
+
+    return obj;
 }
 
-export class UsersController extends Controller {
+export class UserController extends Controller {
 
     static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new UsersController(request, h).handleInternal();
+        return await new UserController(request, h).handleInternal();
     }
 
     protected async get(): Promise<IHttpResponse> {
@@ -33,21 +35,21 @@ export class UsersController extends Controller {
             throw Boom.notFound();
         }
 
-        return UserSerializer(user);
+        return new JsonResponse(UserSerializer(user));
     }
 }
 
-export class UsersMeController extends Controller {
+export class UserMeController extends Controller {
 
     static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new UsersMeController(request, h).handleInternal();
+        return await new UserMeController(request, h).handleInternal();
     }
 
     protected async get(): Promise<IHttpResponse> {
         const session = <Session>this.request.auth.credentials;
         const user = session.user;
 
-        return UserSerializer(user);
+        return new JsonResponse(UserSerializer(user));
     }
 
     protected async put(): Promise<IHttpResponse> {
@@ -63,6 +65,6 @@ export class UsersMeController extends Controller {
             photo,
         });
 
-        return UserSerializer(user);
+        return new JsonResponse(UserSerializer(user));
     }
 }

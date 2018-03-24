@@ -12,7 +12,7 @@ if (loggingConfig.console) {
 export default new Winston.Logger({
     transports: transports,
     rewriters: <any>[
-        ((level, msg, meta) => { Object.keys(meta).length > 0 ? Purdy(meta) : null; }),
+        ((level, msg, meta) => { Object.keys(meta).length > 0 ? Purdy(meta) : null; }),  // tslint:disable-line
     ],
 });
 
