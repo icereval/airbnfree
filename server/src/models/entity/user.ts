@@ -1,31 +1,39 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { getConnection, Entity, Column, Index, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { IsIn } from 'class-validator';
+import { IsIn, IsNotEmpty, IsBoolean, IsEmail } from 'class-validator';
 import config from '../../config';
 import logger from '../../logging';
 
-
 @Entity()
-@Index('username_unique', (user: User) => [ user.username ], { unique: true })
+@Index('email_unique', (user: User) => [ user.email ], { unique: true })
 export class User {
 
     @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
     @Column('text')
-    username: string;
+    @IsNotEmpty()
+    @IsEmail()
+    email: string;
 
     @Column('text')
     password: string;
 
-    @Column('text', { name: 'firstname' })
+    @Column('text')
+    @IsNotEmpty()
     firstName: string;
 
-    @Column('text', { name: 'lastname' })
+    @Column('text')
+    @IsNotEmpty()
     lastName: string;
 
-    @Column('boolean')
+    @Column('text')
+    @IsNotEmpty()
+    photo: string;
+
+    @Column('boolean', { default: true })
+    @IsBoolean()
     active: boolean;
 
     @Column('text')
@@ -35,15 +43,14 @@ export class User {
     static async create(user: User): Promise<User> {
         const repo = getConnection().getRepository(User);
 
-        const exists = await repo.count({ username: user.username });
+        const exists = await repo.count({ email: user.email });
         if (exists) {
-            throw new Error('User Already Exists');
+            throw new Error('Email Already Exists');
         }
 
         let entity = repo.create(user);
         // Source: https://blogs.dropbox.com/tech/2016/09/how-dropbox-securely-stores-your-passwords/
         entity.password = User.encrypt(await User.bcrypt(User.sha512(entity.password)));
-        entity.active = true;
         entity = await repo.save(entity);
 
         return entity;
@@ -71,11 +78,11 @@ export class User {
         return await repo.save(entity);
     }
 
-    static async verify(username: string, password: string): Promise<User> {
+    static async verify(email: string, password: string): Promise<User> {
         return await getConnection().transaction(async transactionalEntityManager => {
             const repo = transactionalEntityManager.getRepository(User);
 
-            const user = await repo.findOne({ username });
+            const user = await repo.findOne({ email });
             if (!user) {
                 throw new Error('User Not Found');
             }
@@ -124,5 +131,3 @@ export class User {
         return decrypted;
     }
 }
-
-export default User;

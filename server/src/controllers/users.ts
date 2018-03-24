@@ -2,15 +2,17 @@ import * as Hapi from 'hapi';
 import * as Boom from 'boom';
 import * as TypeOrm from 'typeorm';
 import { Controller, IHttpResponse, JsonResponse } from './base';
-import Session from '../models/entity/session';
-import User from '../models/entity/user';
+import { Session } from '../models/entity/session';
+import { User } from '../models/entity/user';
 import logger from '../logging';
 
 function UserSerializer(user: User): IHttpResponse {
     return new JsonResponse({
         id: user.id,
+        email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        photo: user.photo,
         active: user.active,
         type: user.type,
     });
@@ -26,16 +28,12 @@ export class UsersController extends Controller {
         const id = this.request.params.id;
 
         const repo = TypeOrm.getConnection().getRepository(User);
-        try {
-            const user = await repo.findOne({ where: { id, active: true } });
-            if (!user) {
-                throw Boom.notFound();
-            }
-
-            return UserSerializer(user);
-        } catch (err) {
-            logger.error(err);
+        const user = await repo.findOne({ where: { id, active: true } });
+        if (!user) {
+            throw Boom.notFound();
         }
+
+        return UserSerializer(user);
     }
 }
 
@@ -54,17 +52,17 @@ export class UsersMeController extends Controller {
 
     protected async put(): Promise<IHttpResponse> {
         const session = <Session>this.request.auth.credentials;
-        const { firstName, lastName, password } = <any>this.request.payload;
+        const { email, firstName, lastName, password, photo } = <any>this.request.payload;
 
         const user = await User.update(<User>{
             id: session.user.id,
+            email,
             firstName,
             lastName,
             password,
+            photo,
         });
 
         return UserSerializer(user);
     }
 }
-
-export default UsersController;

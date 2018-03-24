@@ -4,9 +4,8 @@ import * as moment from 'moment';
 import * as TypeOrm from 'typeorm';
 import logger from '../logging';
 import config from '../config';
-import Session from '../models/entity/session';
-import User from '../models/entity/user';
-
+import { Session } from '../models/entity/session';
+import { User } from '../models/entity/user';
 
 export default class AuthCookiePlugin {
     public static async register(server: hapi.Server): Promise<void> {

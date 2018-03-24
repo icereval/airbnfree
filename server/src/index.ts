@@ -4,7 +4,6 @@ import { Server } from './server';
 import { createConnection, getConnectionManager } from 'typeorm';
 import logger from './logging';
 
-
 async function main(): Promise<void> {
     logger.info(`Running enviroment ${process.env.NODE_ENV || 'dev'}`);
 

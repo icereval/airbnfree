@@ -3,14 +3,13 @@ import * as Joi from 'joi';
 import { AuthLoginController, AuthLogoutController, AuthSignUpController } from './controllers/auth';
 import { UsersController, UsersMeController } from './controllers/users';
 
-
 export default class Routes {
 
     public static async init(server: Hapi.Server): Promise<void> {
         server.route({ method: [ 'POST' ], path: '/login', handler: AuthLoginController.handler, options: {
             validate: {
                 payload: Joi.object({
-                    username: Joi.string().required(),
+                    email: Joi.string().required(),
                     password: Joi.string().required(),
                 }),
             },
@@ -19,7 +18,7 @@ export default class Routes {
         server.route({ method: [ 'POST' ], path: '/signup', handler: AuthSignUpController.handler, options: {
             validate: {
                 payload: Joi.object({
-                    username: Joi.string().required(),
+                    email: Joi.string().required(),
                     password: Joi.string().required(),
                     firstName: Joi.string().required(),
                     lastName: Joi.string().required(),
@@ -33,7 +32,10 @@ export default class Routes {
             auth: { mode: 'required' },
             validate: {
                 payload: Joi.object({
+                    email: Joi.string(),
                     firstName: Joi.string(),
+                    lastName: Joi.string(),
+                    photo: Joi.string(),
                     active: Joi.boolean(),
                     password: Joi.string(),
                 }),

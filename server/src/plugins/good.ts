@@ -2,7 +2,6 @@ import * as Hapi from 'hapi';
 import * as good from 'good';
 import logger from '../logging';
 
-
 export default class GoodPlugin {
     public static async register(server: Hapi.Server): Promise<void> {
         try {

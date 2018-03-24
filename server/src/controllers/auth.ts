@@ -2,8 +2,8 @@ import * as Hapi from 'hapi';
 import * as Boom from 'boom';
 import * as TypeOrm from 'typeorm';
 import { Controller, IHttpResponse, HttpResponseRedirect, JsonResponse } from './base';
-import Session from '../models/entity/session';
-import User from '../models/entity/user';
+import { Session } from '../models/entity/session';
+import { User } from '../models/entity/user';
 import logger from '../logging';
 import config from '../config';
 
@@ -24,11 +24,11 @@ export class AuthLoginController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { username, password } = <any>this.request.params;
+        const { email, password } = <any>this.request.params;
 
         const user = await (async () => {
             try {
-                return await User.verify(username, password);
+                return await User.verify(email, password);
             } catch (e) {
                 throw Boom.unauthorized();
             }
@@ -65,10 +65,10 @@ export class AuthSignUpController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { username, password, firstName, lastName } = <any>this.request.params;
+        const { email, password, firstName, lastName } = <any>this.request.params;
 
         const user = await User.create(<User>{
-            username,
+            email,
             password,
             firstName,
             lastName,

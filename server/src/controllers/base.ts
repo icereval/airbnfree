@@ -2,15 +2,15 @@ import * as Hapi from 'hapi';
 import * as Boom from 'boom';
 import logger from '../logging';
 
-
 export interface IHttpResponse {
     data: any;
     code?: number;
     headers?: Map<string, string>;
-    handler(h: Hapi.ResponseToolkit): Hapi.ResponseObject;
+    handler(h: Hapi.ResponseToolkit): Hapi.Lifecycle.ReturnValue;
 }
 
 export class HttpResponse implements IHttpResponse {
+
     public data: any;
     public code: number;
     public headers: Map<string, string>;
@@ -21,7 +21,7 @@ export class HttpResponse implements IHttpResponse {
         this.headers = headers || new Map<string, string>();
     }
 
-    handler(h: Hapi.ResponseToolkit): Hapi.ResponseObject {
+    handler(h: Hapi.ResponseToolkit): Hapi.Lifecycle.ReturnValue {
         const response = h.response(this.data);
 
         if (this.code !== undefined) {
@@ -37,6 +37,7 @@ export class HttpResponse implements IHttpResponse {
 }
 
 export class HttpResponseRedirect extends HttpResponse {
+
     public uri: string;
 
     constructor(uri: any) {
@@ -44,7 +45,7 @@ export class HttpResponseRedirect extends HttpResponse {
         this.uri = uri;
     }
 
-    handler(h: Hapi.ResponseToolkit): Hapi.ResponseObject {
+    handler(h: Hapi.ResponseToolkit): Hapi.Lifecycle.ReturnValue {
         return h.redirect(this.uri);
     }
 }
@@ -52,6 +53,7 @@ export class HttpResponseRedirect extends HttpResponse {
 export class JsonResponse extends HttpResponse {}
 
 export abstract class Controller {
+
     protected request: Hapi.Request;
     protected h: Hapi.ResponseToolkit;
 
@@ -64,19 +66,22 @@ export abstract class Controller {
         const method = this.request.method;
 
         try {
+            let response;
             if (method === 'delete') {
-                return await this.delete();
+                response = await this.delete();
             } else if (method === 'get') {
-                return await this.get();
+                response = await this.get();
             } else if (method === 'patch') {
-                return await this.patch();
+                response = await this.patch();
             } else if (method === 'post') {
-                return await this.post();
+                response = await this.post();
             } else if (method === 'put') {
-                return await this.put();
+                response = await this.put();
             } else {
                 throw Boom.notImplemented();
             }
+
+            return this.responseHandler(response);
         } catch (err) {
             logger.info('Here at the global error handler...');
             return this.errorHandler(err);
@@ -107,8 +112,8 @@ export abstract class Controller {
         return arg.isBoom !== undefined;
     }
 
-    private responseHandler(response: IHttpResponse): void {
-        response.handler(this.h);
+    private responseHandler(response: IHttpResponse): Hapi.Lifecycle.ReturnValue {
+        return response.handler(this.h);
     }
 
     private errorHandler(e: Error): Hapi.Lifecycle.ReturnValue {

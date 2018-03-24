@@ -1,8 +1,7 @@
 import { getConnection, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import User from './user';
+import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
-
 
 @Entity()
 export class Session {
@@ -21,5 +20,3 @@ export class Session {
         return await repo.save(session);
     }
 }
-
-export default Session;
