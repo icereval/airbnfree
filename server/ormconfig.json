@@ -1,0 +1,20 @@
+[
+    {
+        "name": "default",
+        "type": "postgres",
+        "host": "localhost",
+        "port": 5432,
+        "username": "postgres",
+        "password": "",
+        "database": "test",
+        "synchronize": true,
+        "logging": {
+            "query": false,
+            "error": false,
+            "schema": false
+        },
+        "entities": ["./dist/models/entity/*.js"],
+        "migrations": ["./migrations/*.js"],
+        "subscribers": ["./dist/models/subscriber/*.js"]
+    }
+]

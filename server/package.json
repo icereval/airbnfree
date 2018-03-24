@@ -1,0 +1,58 @@
+{
+  "name": "typescript-seed",
+  "version": "0.0.1",
+  "description": "Typescript Seed",
+  "author": {
+    "name": "Michael Haselton"
+  },
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/icereval/typescript-seed"
+  },
+  "scripts": {
+    "start": "npm run build && node dist/index.js",
+    "start-old": "ts-node src/index.ts",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "migrate": "ts-node node_modules/.bin/typeorm"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^1.0.0",
+    "@types/boom": "^7.2.0",
+    "@types/hapi": "^17.0.7",
+    "@types/joi": "^13.0.7",
+    "@types/nconf": "^0.0.37",
+    "@types/node": "^9.6.0",
+    "@types/pg": "^7.4.5",
+    "@types/pg-pool": "^0.0.3",
+    "@types/winston": "^2.2.0",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.1.6"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "boom": "^7.2.0",
+    "good": "^8.1.1",
+    "good-console": "^7.1.0",
+    "good-squeeze": "^5.0.1",
+    "hapi": "^17.2.3",
+    "hapi-auth-cookie": "^8.1.0",
+    "hapi-config": "^0.2.2",
+    "inert": "^5.1.0",
+    "moment": "^2.17.1",
+    "nconf": "^0.10.0",
+    "nconf-yaml": "^1.0.2",
+    "pg": "^7.4.1",
+    "pg-pool": "^2.0.3",
+    "purdy": "^3.0.2",
+    "reflect-metadata": "^0.1.9",
+    "request": "^2.79.0",
+    "typeorm": "^0.1.16",
+    "vision": "^5.3.2",
+    "winston": "^2.3.1",
+    "winston-console-formatter": "^1.0.0-beta.3"
+  }
+}
