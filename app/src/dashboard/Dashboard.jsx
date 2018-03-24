@@ -10,22 +10,32 @@ import DashboardLoader from '../loading/DashboardLoader';
 import * as UserActions from '../user/userActions';
 
 class Dashboard extends Component {
-  componentDidMount() {
-    console.log('did mount');
-    this.props.getUser();
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      loading: true,
+    };
+  }
+
+  componentWillMount() {
+    this.props.getUser().then((user) => {
+      this.setState({ loading: false });
+      this.props.history.push(`/dashboard/${user.type}`);
+    });
   }
 
   render() {
-    const loading = !this.props.user.loaded ||
-      this.props.user.loading;
+    const { user } = this.props;
 
     return (
       <DashboardStyles>
-        <DashboardTopbar />
+        {this.state.loading ? <DashboardLoader /> :
+        <div>
+          <DashboardTopbar type={user.loaded.type} />
+          <div>Dashboard</div>
+        </div>}
         <Route path="/dashboard/profile" component={Profile} />
-        {loading ? <DashboardLoader /> :
-        <div>Dashboard</div>
-        }
       </DashboardStyles>
     );
   }
@@ -33,10 +43,15 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   user: PropTypes.shape({
-    loaded: PropTypes.shape({}),
+    loaded: PropTypes.shape({
+      type: PropTypes.string,
+    }),
     loading: PropTypes.bool,
   }).isRequired,
   getUser: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 function mapStateToProps(state) {

@@ -21,8 +21,11 @@ export function getUser() {
     };
     dispatch(userEvent(types.GET_USER_REQUEST));
 
-    setTimeout(() => {
-      dispatch(userEvent(types.GET_USER_SUCCESS, user));
-    }, 2000);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        dispatch(userEvent(types.GET_USER_SUCCESS, user));
+        resolve(user);
+      }, 2000);
+    });
   };
 }
