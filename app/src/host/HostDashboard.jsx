@@ -7,16 +7,33 @@ import Requests from '../requests/Requests';
 import Locations from '../locations/Locations';
 import SmallLoader from '../loading/SmallLoader';
 import * as LocationsActions from '../locations/locationsActions';
+import * as RequestActions from '../requests/requestActions';
 
 class HostDashboard extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      requestsLoaded: false,
+    };
+  }
+
   componentDidMount() {
     this.props.getLocations();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.user.loaded).length > 0
+      && !this.state.requestsLoaded) {
+      this.props.getHostStays(nextProps.user.loaded.host.id);
+      this.setState({ requestsLoaded: true });
+    }
   }
 
   render() {
     const {
       locations,
       user,
+      requests,
     } = this.props;
     const locationsLoading = locations.loading ||
       locations.loaded.length <= 0;
@@ -28,8 +45,8 @@ class HostDashboard extends Component {
     return (
       <HostStyles>
         <Requests
-          explanation="Review requests for your locations"
-          locations={[]}
+          title="Review requests for your locations"
+          stays={requests.hostStays}
         />
         {locationsLoading ? <SmallLoader /> :
         <Locations
@@ -43,19 +60,28 @@ class HostDashboard extends Component {
 
 HostDashboard.propTypes = {
   user: PropTypes.shape({
-    loaded: PropTypes.shape({}),
+    loaded: PropTypes.shape({
+      host: PropTypes.shape({
+        id: PropTypes.number,
+      }),
+    }),
   }).isRequired,
   locations: PropTypes.shape({
     loading: PropTypes.bool,
     loaded: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
+  requests: PropTypes.shape({
+    hostStays: PropTypes.arrayOf(PropTypes.shape({})),
+  }).isRequired,
   getLocations: PropTypes.func.isRequired,
+  getHostStays: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     user: state.user,
     locations: state.locations,
+    requests: state.requests,
   };
 }
 
@@ -63,6 +89,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign(
     {},
     LocationsActions,
+    RequestActions,
   ), dispatch);
 }
 
