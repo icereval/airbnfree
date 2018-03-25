@@ -15,7 +15,7 @@ export class AuthLoginController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { email, password } = <any>this.request.params;
+        const { email, password } = <any>this.request.payload;
 
         const user = await (async () => {
             try {
@@ -56,7 +56,7 @@ export class AuthSignUpController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { email, password, firstName, lastName } = <any>this.request.params;
+        const { email, password, firstName, lastName } = <any>this.request.payload;
 
         const user = await User.create(<User>{
             email,
