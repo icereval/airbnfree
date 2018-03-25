@@ -5,6 +5,9 @@ import { Controller, IHttpResponse, JsonResponse } from './base';
 import { Client } from '../models/entity/client';
 import { UserSerializer } from './users';
 import logger from '../logging';
+import { Stay } from '../models/entity/stay';
+import { LocationSerializer } from './locations';
+import { StaySerializer } from './stays';
 
 export function ClientSerializer(client: Client): Object {
     const obj = {
@@ -30,12 +33,12 @@ export class ClientController extends Controller {
         const id = this.request.params.id;
 
         const repo = TypeOrm.getConnection().getRepository(Client);
-        const host = await repo.findOneById(id, { relations: [ 'user' ] });
-        if (!host) {
+        const client = await repo.findOneById(id, { relations: [ 'user' ] });
+        if (!client) {
             throw Boom.notFound();
         }
 
-        return new JsonResponse(ClientSerializer(host));
+        return new JsonResponse(ClientSerializer(client));
     }
 
     protected async put(): Promise<IHttpResponse> {
@@ -68,4 +71,41 @@ export class ClientListController extends Controller {
             return ClientSerializer(entity);
         }));
     }
+}
+
+export class ClientStayController extends Controller {
+
+    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
+        return await new ClientStayController(request, h).handleInternal();
+    }
+
+    protected async get(): Promise<IHttpResponse> {
+        const id = this.request.params.id;
+
+        const repo = TypeOrm.getConnection().getRepository(Client);
+        const client = await repo.findOneById(id);
+        if (!client) {
+            throw Boom.notFound();
+        }
+
+        const stays = await client.stays();
+        return new JsonResponse(stays.map(stay => {
+            return StaySerializer(stay);
+        }));
+    }
+
+    // protected async put(): Promise<IHttpResponse> {
+    //     const id = +this.request.params.id;
+    //     const { felony, photo } = <any>this.request.payload;
+
+    //     // Authorization...
+
+    //     const client = await Client.update(<Client>{
+    //         id,
+    //         felony,
+    //         photo,
+    //     });
+
+    //     return new JsonResponse(ClientSerializer(client));
+    // }
 }

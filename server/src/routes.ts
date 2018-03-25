@@ -1,9 +1,9 @@
 import * as Hapi from 'hapi';
 import * as Joi from 'joi';
 import { AuthLoginController, AuthLogoutController, AuthSignUpController } from './controllers/auth';
-import { CaseManagerController, CaseManagerListController } from './controllers/casemanagers';
-import { ClientController, ClientListController } from './controllers/clients';
-import { HostController, HostListController, HostLocationListController } from './controllers/hosts';
+import { CaseManagerController, CaseManagerListController, CaseManagerStayController } from './controllers/casemanagers';
+import { ClientController, ClientListController, ClientStayController } from './controllers/clients';
+import { HostController, HostListController, HostLocationListController, HostStayController } from './controllers/hosts';
 import { LocationController, LocationListController } from './controllers/locations';
 import { UserController, UserMeController } from './controllers/users';
 
@@ -48,6 +48,14 @@ export default class Routes {
                 }),
             },
         }});
+        server.route({ method: [ 'GET' ], path: '/casemanagers/{id}/stays', handler: CaseManagerStayController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
 
         server.route({ method: [ 'GET' ], path: '/clients', handler: ClientListController.handler, options: { auth: { mode: 'try' } } });
         server.route({ method: [ 'GET' ], path: '/clients/{id}', handler: ClientController.handler, options: {
@@ -61,10 +69,21 @@ export default class Routes {
         server.route({ method: [ 'PUT' ], path: '/clients/{id}', handler: ClientController.handler, options: {
             auth: { mode: 'try' },
             validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
                 payload: Joi.object({
                     felony: Joi.boolean(),
                     photo: Joi.string(),
                 }),
+            },
+        }});
+        server.route({ method: [ 'GET' ], path: '/clients/{id}/stays', handler: ClientStayController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
             },
         }});
 
@@ -80,6 +99,9 @@ export default class Routes {
         server.route({ method: [ 'PUT' ], path: '/hosts/{id}', handler: HostController.handler, options: {
             auth: { mode: 'try' },
             validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
                 payload: Joi.object({
                     name: Joi.string(),
                     description: Joi.string(),
@@ -90,6 +112,14 @@ export default class Routes {
         }});
         server.route({ method: [ 'GET' ], path: '/hosts/{id}/locations', handler: HostLocationListController.handler, options: {
             auth: { mode: 'try' },  // required
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
+        server.route({ method: [ 'GET' ], path: '/hosts/{id}/stays', handler: HostStayController.handler, options: {
+            auth: { mode: 'try' },
             validate: {
                 params: {
                     id: Joi.number().required(),
@@ -109,6 +139,9 @@ export default class Routes {
         server.route({ method: [ 'PUT' ], path: '/locations/{id}', handler: LocationController.handler, options: {
             auth: { mode: 'try' },
             validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
                 payload: Joi.object({
                     name: Joi.string(),
                     address: Joi.string(),
@@ -118,6 +151,7 @@ export default class Routes {
                     host: Joi.string(),
                     photo: Joi.string(),
                     hqs: Joi.boolean(),
+                    rating: Joi.number(),
                 }),
             },
         }});

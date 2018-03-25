@@ -1,10 +1,13 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { getConnection, Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { getConnection, Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
+import { Stay } from './stay';
+import { Location } from './location';
+import { Host } from './host';
 
 @Entity()
 export class Client {
@@ -42,5 +45,19 @@ export class Client {
         entity = repo.merge(entity, client);
 
         return await repo.save(entity);
+    }
+
+    async stays(): Promise<Stay[]> {
+        const repo = getConnection().getRepository(Stay);
+        const queryBuilder = repo.createQueryBuilder('stay')
+            .innerJoinAndMapOne('stay.client', Client, 'client', 'client.id = stay.client')
+            .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
+            .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host')
+            .where('stay.state in :states')
+            .where('client.id = :client')
+            .setParameter('states', [ 'client-requested', 'client-cancelled', 'casemanager-approved', 'casemanager-denied' ])
+            .setParameter('client', this.id);
+
+        return await queryBuilder.getMany();
     }
 }

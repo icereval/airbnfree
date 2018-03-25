@@ -5,6 +5,10 @@ import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
+import { Stay } from './stay';
+import { Client } from './client';
+import { Location } from './location';
+import { Host } from './host';
 
 @Entity()
 export class CaseManager {
@@ -38,5 +42,17 @@ export class CaseManager {
         entity = repo.merge(entity, caseManager);
 
         return await repo.save(entity);
+    }
+
+    async stays(): Promise<Stay[]> {
+        const repo = getConnection().getRepository(Stay);
+        const queryBuilder = repo.createQueryBuilder('stay')
+            .innerJoinAndMapOne('stay.client', Client, 'client', 'client.id = stay.client')
+            .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
+            .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host');
+            // .where('stay.state in :states')
+            // .setParameter('states', [ 'host-approved', 'host-denied', 'casemanager-approved', 'casemanager-denied' ]);
+
+        return await queryBuilder.getMany();
     }
 }

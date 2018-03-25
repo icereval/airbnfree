@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { getConnection, Entity, Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { IsBoolean, IsNotEmpty, IsInt } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsInt, IsNumber } from 'class-validator';
 import { Host } from './host';
 import config from '../../config';
 import logger from '../../logging';
@@ -43,6 +43,10 @@ export class Location {
     @Column('boolean', { default: false })
     @IsBoolean()
     hqs: boolean;
+
+    @Column('decimal', { default: 5.0 })
+    @IsNumber()
+    rating: number;
 
     static async create(location: Location): Promise<Location> {
         const repo = getConnection().getRepository(Location);

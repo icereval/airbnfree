@@ -6,6 +6,7 @@ import { Host } from '../models/entity/host';
 import { LocationSerializer } from './locations';
 import { UserSerializer } from './users';
 import logger from '../logging';
+import { StaySerializer } from './stays';
 
 export function HostSerializer(host: Host): Object {
     const obj = {
@@ -98,6 +99,28 @@ export class HostLocationListController extends Controller {
 
         return new JsonResponse(host.locations.map((entity) => {
             return LocationSerializer(entity);
+        }));
+    }
+}
+
+export class HostStayController extends Controller {
+
+    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
+        return await new HostStayController(request, h).handleInternal();
+    }
+
+    protected async get(): Promise<IHttpResponse> {
+        const id = this.request.params.id;
+
+        const repo = TypeOrm.getConnection().getRepository(Host);
+        const host = await repo.findOneById(id);
+        if (!host) {
+            throw Boom.notFound();
+        }
+
+        const stays = await host.stays();
+        return new JsonResponse(stays.map(stay => {
+            return StaySerializer(stay);
         }));
     }
 }

@@ -17,6 +17,7 @@ export function LocationSerializer(location: Location): Object {
         active: location.active,
         photo: location.photo,
         hqs: location.hqs,
+        rating: location.rating,
     };
 
     if (location.host) {
@@ -46,7 +47,7 @@ export class LocationController extends Controller {
 
     protected async put(): Promise<IHttpResponse> {
         const id = +this.request.params.id;
-        const { name, address, description, rooms, active, photo, hqs } = <any>this.request.payload;
+        const { name, address, description, rooms, active, photo, hqs, rating } = <any>this.request.payload;
 
         // const session = <Session>this.request.auth.credentials;
         // const repo = TypeOrm.getConnection().getRepository(Location);
@@ -63,6 +64,7 @@ export class LocationController extends Controller {
             active,
             photo,
             hqs,
+            rating,
         });
 
         return new JsonResponse(LocationSerializer(location));
@@ -85,7 +87,7 @@ export class LocationListController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { host, name, address, description, rooms, active, photo, hqs } = <any>this.request.payload;
+        const { host, name, address, description, rooms, active, photo, hqs, rating } = <any>this.request.payload;
         const session = <Session>this.request.auth.credentials;
 
         // const validator = new Validator();
@@ -105,6 +107,7 @@ export class LocationListController extends Controller {
             active,
             photo,
             hqs,
+            rating,
         });
 
         return new JsonResponse(LocationSerializer(location));

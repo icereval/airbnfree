@@ -6,6 +6,7 @@ import { CaseManager } from '../models/entity/casemanager';
 import { LocationSerializer } from './locations';
 import { UserSerializer } from './users';
 import logger from '../logging';
+import { StaySerializer } from './stays';
 
 export function CaseManagerSerializer(caseManager: CaseManager): Object {
     const obj = {
@@ -65,6 +66,28 @@ export class CaseManagerListController extends Controller {
 
         return new JsonResponse(caseManagers.map((entity) => {
             return CaseManagerSerializer(entity);
+        }));
+    }
+}
+
+export class CaseManagerStayController extends Controller {
+
+    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
+        return await new CaseManagerStayController(request, h).handleInternal();
+    }
+
+    protected async get(): Promise<IHttpResponse> {
+        const id = this.request.params.id;
+
+        const repo = TypeOrm.getConnection().getRepository(CaseManager);
+        const caseManager = await repo.findOneById(id);
+        if (!caseManager) {
+            throw Boom.notFound();
+        }
+
+        const stays = await caseManager.stays();
+        return new JsonResponse(stays.map(stay => {
+            return StaySerializer(stay);
         }));
     }
 }

@@ -1,11 +1,12 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { getConnection, Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { getConnection, Entity, Column, JoinColumn, OneToOne, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsInt, IsIn } from 'class-validator';
 import config from '../../config';
 import logger from '../../logging';
 import { Client } from './client';
 import { Location } from './location';
+import { Host } from './host';
 
 @Entity()
 export class Stay {
@@ -13,11 +14,15 @@ export class Stay {
     @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @OneToOne(type => Client)
+    @ManyToOne(type => Client, client => client.stays)
     @JoinColumn()
     client: Client;
 
-    @OneToOne(type => Location)
+    // @ManyToOne(type => Host, host => host.stays)
+    // @JoinColumn()
+    // host: Host;
+
+    @ManyToOne(type => Location)
     @JoinColumn()
     location: Location;
 
@@ -30,7 +35,7 @@ export class Stay {
     rooms: number;
 
     @Column('text')
-    @IsIn(['client-requested', 'host-approved', 'host-denied', 'casemanager-approved', 'casemanager-denied'])
+    @IsIn(['client-requested', 'client-cancelled', 'host-approved', 'host-denied', 'casemanager-approved', 'casemanager-denied'])
     state: string;
 
     static async create(stay: Stay): Promise<Stay> {
