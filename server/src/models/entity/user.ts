@@ -50,7 +50,7 @@ export class User {
 
         let entity = repo.create(user);
         // Source: https://blogs.dropbox.com/tech/2016/09/how-dropbox-securely-stores-your-passwords/
-        // entity.password = User.encrypt(await User.bcrypt(User.sha512(entity.password)));
+        entity.password = User.encrypt(await User.bcrypt(User.sha512(entity.password)));
         entity = await repo.save(entity);
 
         return entity;
@@ -72,8 +72,7 @@ export class User {
 
         if (user.password) {
             // Source: https://blogs.dropbox.com/tech/2016/09/how-dropbox-securely-stores-your-passwords/
-            // entity.password = User.encrypt(await User.bcrypt(User.sha512(entity.password)));
-            entity.password = user.password;
+            entity.password = User.encrypt(await User.bcrypt(User.sha512(entity.password)));
         }
 
         return await repo.save(entity);
@@ -88,14 +87,9 @@ export class User {
                 throw new Error('User Not Found');
             }
 
-            console.log('password: ' + password);
-            console.log('"' + (Buffer.from(User.encrypt(await User.bcrypt(User.sha512(password))))).toString('base64') + '"');
-            console.log('"' + (Buffer.from(User.encrypt(await User.bcrypt(User.sha512(user.password))))).toString('base64') + '"');
-
             const validPassword = await new Promise<boolean>((resolve, reject) =>  {
                 // TODO: Ensure constant time bcrypt
-                // bcrypt.compare(User.sha512(password), User.decrypt(user.password), ((err, same) => resolve(same)));
-                return resolve(user.password === password);
+                bcrypt.compare(User.sha512(password), User.decrypt(user.password), ((err, same) => resolve(same)));
             });
 
             if (!validPassword) {
