@@ -41,6 +41,10 @@ export class Location {
     @IsNotEmpty()
     photo: string;
 
+    @Column('boolean', { default: false })
+    @IsBoolean()
+    hqs: boolean;
+
     static async create(location: Location): Promise<Location> {
         const repo = getConnection().getRepository(Location);
         const entity = repo.create(location);

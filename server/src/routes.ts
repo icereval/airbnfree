@@ -38,6 +38,17 @@ export default class Routes {
                 },
             },
         }});
+        server.route({ method: [ 'PUT' ], path: '/hosts/{id}', handler: HostController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                payload: Joi.object({
+                    name: Joi.string(),
+                    description: Joi.string(),
+                    away: Joi.boolean(),
+                    photo: Joi.string(),
+                }),
+            },
+        }});
         server.route({ method: [ 'GET' ], path: '/hosts/{id}/locations', handler: HostLocationListController.handler, options: {
             auth: { mode: 'try' },  // required
             validate: {
@@ -54,6 +65,21 @@ export default class Routes {
                 params: {
                     id: Joi.number().required(),
                 },
+            },
+        }});
+        server.route({ method: [ 'PUT' ], path: '/locations/{id}', handler: LocationController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                payload: Joi.object({
+                    name: Joi.string(),
+                    address: Joi.string(),
+                    description: Joi.string(),
+                    rooms: Joi.string(),
+                    active: Joi.boolean(),
+                    host: Joi.string(),
+                    photo: Joi.string(),
+                    hqs: Joi.boolean(),
+                }),
             },
         }});
 

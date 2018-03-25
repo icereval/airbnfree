@@ -46,6 +46,23 @@ export class HostController extends Controller {
 
         return new JsonResponse(HostSerializer(host));
     }
+
+    protected async put(): Promise<IHttpResponse> {
+        const id = +this.request.params.id;
+        const { name, description, away, photo } = <any>this.request.payload;
+
+        // Authorization...
+
+        const host = await Host.update(<Host>{
+            id,
+            name,
+            description,
+            away,
+            photo,
+        });
+
+        return new JsonResponse(HostSerializer(host));
+    }
 }
 
 export class HostListController extends Controller {
@@ -79,6 +96,8 @@ export class HostLocationListController extends Controller {
             throw Boom.notFound();
         }
 
-        return new JsonResponse(HostSerializer(host));
+        return new JsonResponse(host.locations.map((entity) => {
+            return LocationSerializer(entity);
+        }));
     }
 }

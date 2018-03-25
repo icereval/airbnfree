@@ -1,9 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { getConnection, Entity, Column, Index, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { getConnection, Entity, Column, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsIn, IsNotEmpty, IsBoolean, IsEmail } from 'class-validator';
 import config from '../../config';
 import logger from '../../logging';
+import { Host } from './host';
+import { Session } from './session';
 
 @Entity()
 @Index('email_unique', (user: User) => [ user.email ], { unique: true })
@@ -39,6 +41,14 @@ export class User {
     @Column('text')
     @IsIn(['casemanager', 'host', 'client'])
     type: string;
+
+    @OneToOne(type => Session, session => session.user)
+    @JoinColumn()
+    session: Promise<Session>;
+
+    @OneToOne(type => Host, host => host.user)
+    @JoinColumn()
+    host: Promise<Host>;
 
     static async create(user: User): Promise<User> {
         const repo = getConnection().getRepository(User);
