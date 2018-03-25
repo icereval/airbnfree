@@ -41,16 +41,16 @@ export class User {
     type: string;
 
     @OneToOne(type => Session, session => session.user)
-    @JoinColumn()
     session: Promise<Session>;
 
-    // @OneToOne(type => Client, client => client.user)
-    // @JoinColumn()
-    // client: Promise<Host>;
+    @OneToOne(type => Client, client => client.user)
+    client: Client;
 
-    // @OneToOne(type => Host, host => host.user)
-    // @JoinColumn()
-    // host: Promise<Host>;
+    @OneToOne(type => Host, host => host.user)
+    host: Host;
+
+    @OneToOne(type => CaseManager, caseManager => caseManager.user)
+    caseManager: CaseManager;
 
     static async create(user: User): Promise<User> {
         const repo = getConnection().getRepository(User);
