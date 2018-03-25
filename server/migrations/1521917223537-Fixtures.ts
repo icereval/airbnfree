@@ -15,6 +15,12 @@ export class Fixtures1521917223537 implements MigrationInterface {
         `, [ Buffer.from(password, 'base64').toString('utf8') ]);
 
         await queryRunner.query(`
+            INSERT INTO "case_manager" (photo, "userId") VALUES
+                ('photo...', 1)
+            ;
+        `);
+
+        await queryRunner.query(`
             INSERT INTO "client" (felony, photo, "userId") VALUES
                 (TRUE, 'photo...', 3)
                 , (FALSE, 'photo...', 4)

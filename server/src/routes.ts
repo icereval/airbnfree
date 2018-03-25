@@ -1,6 +1,7 @@
 import * as Hapi from 'hapi';
 import * as Joi from 'joi';
 import { AuthLoginController, AuthLogoutController, AuthSignUpController } from './controllers/auth';
+import { CaseManagerController, CaseManagerListController } from './controllers/casemanagers';
 import { ClientController, ClientListController } from './controllers/clients';
 import { HostController, HostListController, HostLocationListController } from './controllers/hosts';
 import { LocationController, LocationListController } from './controllers/locations';
@@ -26,6 +27,24 @@ export default class Routes {
                     firstName: Joi.string().required(),
                     lastName: Joi.string().required(),
                     type: Joi.string().required(),
+                }),
+            },
+        }});
+
+        server.route({ method: [ 'GET' ], path: '/casemanagers', handler: CaseManagerListController.handler, options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/casemanagers/{id}', handler: CaseManagerController.handler, options: {
+            auth: { mode: 'try' },  // required
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
+        server.route({ method: [ 'PUT' ], path: '/casemanagers/{id}', handler: CaseManagerController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                payload: Joi.object({
+                    photo: Joi.string(),
                 }),
             },
         }});

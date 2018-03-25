@@ -3,7 +3,6 @@ import * as Boom from 'boom';
 import * as TypeOrm from 'typeorm';
 import { Controller, IHttpResponse, JsonResponse } from './base';
 import { Client } from '../models/entity/client';
-import { LocationSerializer } from './locations';
 import { UserSerializer } from './users';
 import logger from '../logging';
 
