@@ -14,7 +14,11 @@ export class Server {
                 stripTrailingSlash: true,
             },
             routes: {
-                cors: config.get('server:routes:cors'),
+                // cors: config.get('server:routes:cors'),
+                cors: {
+                    origin: [ '*' ],
+                    credentials: true,
+                },
             },
         });
 
