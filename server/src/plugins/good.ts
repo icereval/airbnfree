@@ -27,7 +27,7 @@ export default class GoodPlugin {
                     },
                 },
             });
-        } catch(err) {
+        } catch (err) {
             logger.error(`Error registering good plugin: ${err}`);
             throw err;
         }
