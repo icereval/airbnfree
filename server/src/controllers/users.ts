@@ -12,7 +12,6 @@ export function UserSerializer(user: User): Object {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        photo: user.photo,
         active: user.active,
         type: user.type,
     };
@@ -54,7 +53,7 @@ export class UserMeController extends Controller {
 
     protected async put(): Promise<IHttpResponse> {
         const session = <Session>this.request.auth.credentials;
-        const { email, firstName, lastName, password, photo } = <any>this.request.payload;
+        const { email, password, firstName, lastName } = <any>this.request.payload;
 
         const user = await User.update(<User>{
             id: session.user.id,
@@ -62,7 +61,6 @@ export class UserMeController extends Controller {
             firstName,
             lastName,
             password,
-            photo,
         });
 
         return new JsonResponse(UserSerializer(user));

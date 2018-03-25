@@ -56,13 +56,14 @@ export class AuthSignUpController extends Controller {
     }
 
     protected async post(): Promise<IHttpResponse> {
-        const { email, password, firstName, lastName } = <any>this.request.payload;
+        const { email, password, firstName, lastName, type } = <any>this.request.payload;
 
         const user = await User.create(<User>{
             email,
             password,
             firstName,
             lastName,
+            type,
         });
 
         const session = await Session.create(user);

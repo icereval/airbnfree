@@ -4,6 +4,7 @@ import { getConnection, Entity, Column, Index, JoinColumn, OneToOne, PrimaryGene
 import { IsIn, IsNotEmpty, IsBoolean, IsEmail } from 'class-validator';
 import config from '../../config';
 import logger from '../../logging';
+import { Client } from './client';
 import { Host } from './host';
 import { Session } from './session';
 
@@ -30,10 +31,6 @@ export class User {
     @IsNotEmpty()
     lastName: string;
 
-    @Column('text')
-    @IsNotEmpty()
-    photo: string;
-
     @Column('boolean', { default: true })
     @IsBoolean()
     active: boolean;
@@ -46,9 +43,13 @@ export class User {
     @JoinColumn()
     session: Promise<Session>;
 
-    @OneToOne(type => Host, host => host.user)
-    @JoinColumn()
-    host: Promise<Host>;
+    // @OneToOne(type => Client, client => client.user)
+    // @JoinColumn()
+    // client: Promise<Host>;
+
+    // @OneToOne(type => Host, host => host.user)
+    // @JoinColumn()
+    // host: Promise<Host>;
 
     static async create(user: User): Promise<User> {
         const repo = getConnection().getRepository(User);

@@ -1,6 +1,7 @@
 import * as Hapi from 'hapi';
 import * as Joi from 'joi';
 import { AuthLoginController, AuthLogoutController, AuthSignUpController } from './controllers/auth';
+import { ClientController, ClientListController } from './controllers/clients';
 import { HostController, HostListController, HostLocationListController } from './controllers/hosts';
 import { LocationController, LocationListController } from './controllers/locations';
 import { UserController, UserMeController } from './controllers/users';
@@ -25,6 +26,25 @@ export default class Routes {
                     firstName: Joi.string().required(),
                     lastName: Joi.string().required(),
                     type: Joi.string().required(),
+                }),
+            },
+        }});
+
+        server.route({ method: [ 'GET' ], path: '/clients', handler: ClientListController.handler, options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/clients/{id}', handler: ClientController.handler, options: {
+            auth: { mode: 'try' },  // required
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+            },
+        }});
+        server.route({ method: [ 'PUT' ], path: '/clients/{id}', handler: ClientController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                payload: Joi.object({
+                    felony: Joi.boolean(),
+                    photo: Joi.string(),
                 }),
             },
         }});

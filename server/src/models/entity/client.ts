@@ -17,6 +17,10 @@ export class Client {
     @IsBoolean()
     felony: boolean;
 
+    @Column('text')
+    @IsNotEmpty()
+    photo: string;
+
     @OneToOne(type => User)
     @JoinColumn()
     user: User;
