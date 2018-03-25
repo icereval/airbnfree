@@ -5,7 +5,6 @@ import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
-import { isBoolean } from 'util';
 
 @Entity()
 export class Client {
@@ -13,11 +12,11 @@ export class Client {
     @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @Column('boolean')
+    @Column('boolean', { default: false })
     @IsBoolean()
     felony: boolean;
 
-    @Column('text')
+    @Column('text', { default: '' })
     @IsNotEmpty()
     photo: string;
 

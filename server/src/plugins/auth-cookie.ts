@@ -22,6 +22,7 @@ export default class AuthCookiePlugin {
             cookie: config.get('app:cookie_name'),
             password: config.get('app:cookie_secret'),
             isSecure: false,
+            isSameSite: false,
             ttl: moment().add(config.get('app:cookie_expiration'), 'days').valueOf(),
             validateFunc: async (request, session) => {
                 try {

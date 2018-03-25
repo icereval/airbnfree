@@ -5,7 +5,6 @@ import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
-import { isBoolean } from 'util';
 
 @Entity()
 export class CaseManager {
@@ -13,7 +12,7 @@ export class CaseManager {
     @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @Column('text')
+    @Column('text', { default: '' })
     @IsNotEmpty()
     photo: string;
 

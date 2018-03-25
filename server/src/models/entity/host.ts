@@ -6,7 +6,6 @@ import { Location } from './location';
 import { User } from './user';
 import config from '../../config';
 import logger from '../../logging';
-import { isBoolean } from 'util';
 
 @Entity()
 export class Host {
@@ -14,11 +13,11 @@ export class Host {
     @PrimaryGeneratedColumn({ type: 'int' })
     id: number;
 
-    @Column('text')
+    @Column('text', { default: '' })
     @IsNotEmpty()
     name: string;
 
-    @Column('text')
+    @Column('text', { default: '' })
     @IsNotEmpty()
     description: string;
 
@@ -26,7 +25,7 @@ export class Host {
     @IsBoolean()
     away: boolean;
 
-    @Column('text')
+    @Column('text', { default: '' })
     @IsNotEmpty()
     photo: string;
 

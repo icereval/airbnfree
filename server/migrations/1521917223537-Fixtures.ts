@@ -41,6 +41,13 @@ export class Fixtures1521917223537 implements MigrationInterface {
                 , ('Third Apartment', '3 Lala Ln', 'An Apartment', 2, TRUE, 2, 'photo...', TRUE)
             ;
         `);
+
+        await queryRunner.query(`
+            INSERT INTO "stay" (state, "locationId", "clientId", description, rooms) VALUES
+                ('client-requested', 1, 1, 'needs a room', 1)
+                , ('host-approved', 2, 2, 'needs a room', 1)
+            ;
+        `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {

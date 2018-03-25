@@ -5,7 +5,6 @@ import { IsBoolean, IsNotEmpty, IsInt } from 'class-validator';
 import { Host } from './host';
 import config from '../../config';
 import logger from '../../logging';
-import { isBoolean } from 'util';
 
 @Entity()
 export class Location {

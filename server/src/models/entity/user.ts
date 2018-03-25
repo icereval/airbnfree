@@ -4,6 +4,7 @@ import { getConnection, Entity, Column, Index, JoinColumn, OneToOne, PrimaryGene
 import { IsIn, IsNotEmpty, IsBoolean, IsEmail } from 'class-validator';
 import config from '../../config';
 import logger from '../../logging';
+import { CaseManager } from './casemanager';
 import { Client } from './client';
 import { Host } from './host';
 import { Session } from './session';
@@ -63,6 +64,20 @@ export class User {
         // Source: https://blogs.dropbox.com/tech/2016/09/how-dropbox-securely-stores-your-passwords/
         entity.password = User.encrypt(await User.bcrypt(User.sha512(entity.password)));
         entity = await repo.save(entity);
+
+        switch (entity.type) {
+            case 'client':
+                await Client.create(<Client>{ user: entity });
+                break;
+            case 'host':
+                await Host.create(<Host>{ user: entity });
+                break;
+            case 'casemanager':
+                await CaseManager.create(<CaseManager>{ user: entity });
+                break;
+            default:
+                throw new Error('Invalid User Type');
+        }
 
         return entity;
     }
