@@ -7,6 +7,9 @@ import { Client } from '../models/entity/client';
 import { Stay } from '../models/entity/stay';
 import { LocationSerializer } from './locations';
 import { ClientSerializer } from './clients';
+import { User } from '../models/entity/user';
+import { Location } from '../models/entity/location';
+import { Host } from '../models/entity/host';
 
 export function StaySerializer(stay: Stay): Object {
     const obj = {
@@ -46,7 +49,15 @@ export class StayController extends Controller {
         });
 
         const repo = TypeOrm.getConnection().getRepository(Stay);
-        const stay = await repo.findOneById(entity, { relations: [ 'client', 'location' ] });
+        const queryBuilder = repo.createQueryBuilder('stay')
+            .innerJoinAndMapOne('stay.client', Client, 'client', 'client.id = stay.client')
+            .innerJoinAndMapOne('client.user', User, 'clientUser', 'clientUser.id = client.user')
+            .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
+            .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host')
+            .innerJoinAndMapOne('host.user', User, 'hostUser', 'hostUser.id = host.user')
+            .where('stay.id = :stay')
+            .setParameter('stay', entity.id);
+        const stay = await queryBuilder.getOne();
 
         return new JsonResponse(StaySerializer(stay));
     }
@@ -63,7 +74,15 @@ export class StayController extends Controller {
         const entity = await Stay.update(obj);
 
         const repo = TypeOrm.getConnection().getRepository(Stay);
-        const stay = await repo.findOneById(entity, { relations: [ 'client', 'location' ] });
+        const queryBuilder = repo.createQueryBuilder('stay')
+            .innerJoinAndMapOne('stay.client', Client, 'client', 'client.id = stay.client')
+            .innerJoinAndMapOne('client.user', User, 'clientUser', 'clientUser.id = client.user')
+            .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
+            .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host')
+            .innerJoinAndMapOne('host.user', User, 'hostUser', 'hostUser.id = host.user')
+            .where('stay.id = :stay')
+            .setParameter('stay', entity.id);
+        const stay = await queryBuilder.getOne();
 
         return new JsonResponse(StaySerializer(stay));
     }
