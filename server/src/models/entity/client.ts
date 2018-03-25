@@ -55,7 +55,7 @@ export class Client {
             .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
             .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host')
             .innerJoinAndMapOne('host.user', User, 'hostUser', 'hostUser.id = host.user')
-            .where('stay.state in :states')
+            .where('stay.state in (:states)')
             .where('client.id = :client')
             .setParameter('states', [ 'client-requested', 'client-cancelled', 'casemanager-approved', 'casemanager-denied' ])
             .setParameter('client', this.id);

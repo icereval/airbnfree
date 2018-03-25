@@ -66,7 +66,7 @@ export class Host {
             .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
             .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host')
             .innerJoinAndMapOne('host.user', User, 'hostUser', 'hostUser.id = host.user')
-            .where('stay.state in :states')
+            .where('stay.state in (:states)')
             .where('host.id = :host')
             .setParameter('states', [ 'client-requested', 'host-approved', 'host-denied' ])
             .setParameter('host', this.id);
