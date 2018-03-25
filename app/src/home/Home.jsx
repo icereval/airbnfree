@@ -19,7 +19,7 @@ export default class Home extends Component {
       <HomeStyles>
         <Topbar />
         <div className="home-content">
-          <h1>Find a place to stay.</h1>
+          <h1>Your home away from home.</h1>
           <Button onClick={this.navigateToSignup}>
             Get started
           </Button>

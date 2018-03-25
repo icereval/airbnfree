@@ -35,7 +35,8 @@ const ProfileStyles = styled.div`
   }
 
   .user-name {
-    padding: 12px 0;
+    padding-top: 12px;
+    padding-bottom: 2px;
   }
 
   .user-name span {
@@ -50,8 +51,7 @@ const ProfileStyles = styled.div`
   }
 
   .reviews span {
-    padding-top: 12px;
-    padding-bottom: 2px;
+    padding: 2px;
   }
 `;
 

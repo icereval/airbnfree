@@ -23,6 +23,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify('http://localhost:5000'),
+    }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],

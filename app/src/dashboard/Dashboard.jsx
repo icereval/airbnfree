@@ -34,12 +34,10 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { user } = this.props;
-
     return (
       <DashboardStyles>
         {this.state.loading ? <DashboardLoader /> :
-        <DashboardTopbar type={user.loaded.type} />}
+        <DashboardTopbar />}
         <Route path="/dashboard/profile" component={Profile} />
         <Route path="/dashboard/host" component={HostDashboard} />
       </DashboardStyles>
@@ -48,12 +46,6 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  user: PropTypes.shape({
-    loaded: PropTypes.shape({
-      type: PropTypes.string,
-    }),
-    loading: PropTypes.bool,
-  }).isRequired,
   getUser: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
