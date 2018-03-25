@@ -48,6 +48,18 @@ const TopbarStyles = styled.div`
     border-bottom: 2px solid #ff5a5f;
     cursor: pointer;
   }
+
+  .topbar-button {
+    border: none;
+    color: #909aaf;
+    height: 100%;
+  }
+
+  .topbar-button:hover {
+    border-bottom 2px solid #ff5a5f;
+    cursor: pointer;
+    border-radius: 0;
+  }
 `;
 
 export default TopbarStyles;

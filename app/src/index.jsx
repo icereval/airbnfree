@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import 'antd/dist/antd.min.css';
 import '../public/index.css';
 import appReducer from './containers/appReducer';
@@ -13,7 +14,7 @@ middleware.push(thunk);
 
 const store = createStore(
   appReducer,
-  applyMiddleware(...middleware),
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 render(

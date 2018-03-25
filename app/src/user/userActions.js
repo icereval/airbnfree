@@ -1,5 +1,7 @@
 import * as types from './userTypes';
 
+const { API_URL } = process.env;
+
 export function userEvent(type, event) {
   return {
     type,
@@ -16,30 +18,20 @@ export function userEventError(type, error) {
 
 export function getUser() {
   return (dispatch) => {
-    const response = {
-      away: false,
-      description: 'tbd...',
-      id: 1,
-      name: 'Host 1',
-      photo: 'photo...',
-      user: {
-        active: true,
-        email: 'fakehost@test.com',
-        firstName: 'Fake',
-        id: 2,
-        lastName: 'Host',
-        photo: 'photo...',
-        type: 'host',
-      },
-    };
-
     dispatch(userEvent(types.GET_USER_REQUEST));
+    return fetch(`${API_URL}/users/me`, {
+      method: 'GET',
+    }).then(resp => resp.json())
+      .then((response) => {
+        const { error } = response;
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        dispatch(userEvent(types.GET_USER_SUCCESS, response.user));
-        resolve(response.user);
-      }, 2000);
-    });
+        if (error) {
+          dispatch(userEventError(types.GET_USER_FAILURE, error));
+          return { error };
+        }
+        dispatch(userEvent(types.GET_USER_SUCCESS, response));
+        return { response };
+      });
   };
 }
+

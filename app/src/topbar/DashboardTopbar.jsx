@@ -45,7 +45,12 @@ class DashboardTopbar extends Component {
           <div className="topbar-links">
             <Link href="/" to={`/dashboard/${user.loaded.type}`}>Locations</Link>
             <Link href="/" to="/dashboard/profile">Profile</Link>
-            <Button onClick={this.logout}>Log out</Button>
+            <Button
+              onClick={this.logout}
+              className="topbar-button"
+            >
+              Log out
+            </Button>
           </div>
         </div>
       </TopbarStyles>

@@ -9,6 +9,14 @@ const LoadingStyles = styled.div`
     width: 100%;
     color: #37dac9;
   }
+
+  .small-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #37dac9;
+  }
 `;
 
 export default LoadingStyles;
