@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import { Button } from 'antd';
 import TopbarStyles from './topbar.styles';
 import logo from '../../public/images/aribnfree-logo.png';
 import * as AuthActions from '../auth/authActions';
@@ -45,12 +44,13 @@ class DashboardTopbar extends Component {
           <div className="topbar-links">
             <Link href="/" to={`/dashboard/${user.loaded.type}`}>Locations</Link>
             <Link href="/" to="/dashboard/profile">Profile</Link>
-            <Button
+            <a
               onClick={this.logout}
-              className="topbar-button"
+              onKeyPress={this.logout}
+              role="presentation"
             >
               Log out
-            </Button>
+            </a>
           </div>
         </div>
       </TopbarStyles>

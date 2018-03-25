@@ -8,25 +8,42 @@ export default class Locations extends Component {
 
     return (
       <LocationStyles>
-        <h2>Locations</h2>
+        <h1>{this.props.title}</h1>
         {locations.length <= 0 ?
           <div className="no-locations">
               No locations
           </div> :
-            locations.map(location => (
-              <div key={location.id}>
+          <div className="locations-list">
+            {locations.map(location => (
+              <div
+                onClick={this.props.selectLocaton}
+                onKeyPress={this.props.selectLocaton}
+                role="presentation"
+                className="location-box"
+                key={location.id}
+              >
                 <h2>
                   {location.name}
                 </h2>
+                <p>{location.description}</p>
+                <p>{location.address}</p>
               </div>
-            ))
-        }
+            ))}
+          </div>
+      }
       </LocationStyles>
     );
   }
 }
 
 Locations.propTypes = {
+  title: PropTypes.string,
   locations: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  selectLocaton: PropTypes.func,
+};
+
+Locations.defaultProps = {
+  title: '',
+  selectLocaton: () => {},
 };
 

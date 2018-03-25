@@ -28,7 +28,7 @@ class Dashboard extends Component {
       this.setState({ loading: false });
       if (history.location.pathname === '/dashboard/' ||
           history.location.pathname === '/dashboard') {
-        history.push(`/dashboard/${user.type}`);
+        history.push(`/dashboard/${user.response.type}`);
       }
     });
   }

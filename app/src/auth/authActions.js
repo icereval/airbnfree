@@ -23,6 +23,7 @@ export function login(email, password) {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({
         email,
         password,
@@ -48,6 +49,7 @@ export function signup(event) {
     return fetch(`${API_URL}/signup`, {
       method: 'PUT',
       body: JSON.stringify(event),
+      credentials: 'include',
     }).then(resp => resp.json())
       .then((response) => {
         const { error } = response;
@@ -67,6 +69,7 @@ export function logout() {
 
     return fetch(`${API_URL}/logout`, {
       method: 'DELETE',
+      credentials: 'include',
     }).then(resp => resp.json())
       .then((response) => {
         const { error } = response;

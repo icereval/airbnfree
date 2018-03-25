@@ -14,23 +14,35 @@ class HostDashboard extends Component {
   }
 
   render() {
-    const { locations } = this.props;
+    const {
+      locations,
+      user,
+    } = this.props;
+    const hostLocations = locations.loaded.length <= 0 ? [] :
+      locations.loaded
+        .filter(location => location.host.id === user.loaded.id)
+        .map(location => location);
 
     return (
       <HostStyles>
-        <h2>Host Dashboard</h2>
         <Requests
           explanation="Review requests for your locations"
           locations={[]}
         />
         {locations.loading ? <SmallLoader /> :
-        <Locations locations={locations.loaded} />}
+        <Locations
+          title="Your locations"
+          locations={hostLocations}
+        />}
       </HostStyles>
     );
   }
 }
 
 HostDashboard.propTypes = {
+  user: PropTypes.shape({
+    loaded: PropTypes.shape({}),
+  }).isRequired,
   locations: PropTypes.shape({
     loading: PropTypes.bool,
     loaded: PropTypes.arrayOf(PropTypes.shape({})),
@@ -40,6 +52,7 @@ HostDashboard.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    user: state.user,
     locations: state.locations,
   };
 }
