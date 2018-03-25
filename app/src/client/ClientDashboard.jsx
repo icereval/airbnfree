@@ -17,6 +17,9 @@ class ClientDashboard extends Component {
     const { locations } = this.props;
     const locationsLoading = locations.loading ||
       locations.loaded.length <= 0;
+    const hqsLocations = locations.loaded.length <= 0 ? [] :
+      locations.loaded.filter(location => location.hqs)
+        .map(location => location);
 
     return (
       <ClientStyles>
@@ -27,7 +30,7 @@ class ClientDashboard extends Component {
         {locationsLoading ? <SmallLoader /> :
         <Locations
           title="Locations near you"
-          locations={this.props.locations.loaded}
+          locations={hqsLocations}
         />}
       </ClientStyles>
     );

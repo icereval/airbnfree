@@ -27,6 +27,14 @@ const LocationStyles = styled.div`
   .location-box:hover {
     cursor: pointer;
   }
+
+  .reviews {
+    color: #03d4bf;
+  }
+
+  .reviews span {
+    padding: 2px;
+  }
 `;
 
 export default LocationStyles;

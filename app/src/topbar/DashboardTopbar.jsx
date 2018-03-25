@@ -19,7 +19,7 @@ class DashboardTopbar extends Component {
       const { error } = data;
 
       if (!error) {
-        this.props.history.push('/');
+        this.props.history.push('/login');
       }
     });
   }

@@ -27,6 +27,13 @@ export default class Locations extends Component {
                 </h2>
                 <p>{location.description}</p>
                 <p>{location.address}</p>
+                <div className="reviews">
+                  <span>&#9733;</span>
+                  <span>&#9733;</span>
+                  <span>&#9733;</span>
+                  <span>&#9733;</span>
+                  <span>&#9733;</span>
+                </div>
               </div>
             ))}
           </div>
