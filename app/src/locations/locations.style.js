@@ -10,6 +10,10 @@ const LocationStyles = styled.div`
     color: #03d4bf;
   }
 
+  .locations-list {
+    display: flex;
+  }
+
   .location-box {
     flex-direction: column;
     padding: 20px;

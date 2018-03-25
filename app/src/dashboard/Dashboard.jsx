@@ -7,7 +7,9 @@ import DashboardStyles from './dashboard.style';
 import DashboardTopbar from '../topbar/DashboardTopbar';
 import Profile from '../profile/Profile';
 import DashboardLoader from '../loading/DashboardLoader';
+import ClientDashboard from '../client/ClientDashboard';
 import HostDashboard from '../host/HostDashboard';
+import CaseManagerDashboard from '../casemanager/CaseManagerDashboard';
 import * as UserActions from '../user/userActions';
 
 class Dashboard extends Component {
@@ -40,6 +42,8 @@ class Dashboard extends Component {
         <DashboardTopbar />}
         <Route path="/dashboard/profile" component={Profile} />
         <Route path="/dashboard/host" component={HostDashboard} />
+        <Route path="/dashboard/user" component={ClientDashboard} />
+        <Route path="/dashboard/casemanager" component={CaseManagerDashboard} />
       </DashboardStyles>
     );
   }

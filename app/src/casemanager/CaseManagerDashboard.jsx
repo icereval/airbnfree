@@ -2,46 +2,51 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import HostStyles from './host.style';
+import CaseManagerStyles from './casemanager.style';
 import Requests from '../requests/Requests';
 import Locations from '../locations/Locations';
 import SmallLoader from '../loading/SmallLoader';
 import * as LocationsActions from '../locations/locationsActions';
 
-class HostDashboard extends Component {
+class CaseManagerDashboard extends Component {
   componentDidMount() {
     this.props.getLocations();
   }
 
   render() {
-    const {
-      locations,
-      user,
-    } = this.props;
+    const { locations } = this.props;
     const locationsLoading = locations.loading ||
       locations.loaded.length <= 0;
-    const hostLocations = locations.loaded.length <= 0 ? [] :
-      locations.loaded
-        .filter(location => location.host.id === user.loaded.id)
+    const hqsLocations = locations.loaded.length <= 0 ? [] :
+      locations.loaded.filter(location => location.hqs)
+        .map(location => location);
+    const nonCertifiedHQS = locations.loaded.length <= 0 ? [] :
+      locations.loaded.filter(location => !location.hqs)
         .map(location => location);
 
     return (
-      <HostStyles>
+      <CaseManagerStyles>
         <Requests
           explanation="Review requests for your locations"
           locations={[]}
         />
         {locationsLoading ? <SmallLoader /> :
-        <Locations
-          title="Your locations"
-          locations={hostLocations}
-        />}
-      </HostStyles>
+        <div>
+          <Locations
+            title="Locations pending certification"
+            locations={nonCertifiedHQS}
+          />
+          <Locations
+            title="HQS Certified locations"
+            locations={hqsLocations}
+          />
+        </div>}
+      </CaseManagerStyles>
     );
   }
 }
 
-HostDashboard.propTypes = {
+CaseManagerDashboard.propTypes = {
   user: PropTypes.shape({
     loaded: PropTypes.shape({}),
   }).isRequired,
@@ -66,5 +71,5 @@ function mapDispatchToProps(dispatch) {
   ), dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HostDashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(CaseManagerDashboard);
 
