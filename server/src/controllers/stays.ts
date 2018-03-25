@@ -53,7 +53,6 @@ export class StayController extends Controller {
 
     protected async put(): Promise<IHttpResponse> {
         const id = +this.request.params.id;
-        const { description, rooms, state } = <any>this.request.payload;
 
         // Authorization...
 
