@@ -6,6 +6,7 @@ import { ClientController, ClientListController, ClientStayController } from './
 import { HostController, HostListController, HostLocationListController, HostStayController } from './controllers/hosts';
 import { LocationController, LocationListController } from './controllers/locations';
 import { UserController, UserMeController } from './controllers/users';
+import { StayController } from './controllers/stays';
 
 export default class Routes {
 
@@ -152,6 +153,31 @@ export default class Routes {
                     photo: Joi.string(),
                     hqs: Joi.boolean(),
                     rating: Joi.number(),
+                }),
+            },
+        }});
+
+        server.route({ method: [ 'POST' ], path: '/stays', handler: StayController.handler, options: {
+            validate: {
+                payload: Joi.object({
+                    client: Joi.number().required(),
+                    location: Joi.number().required(),
+                    description: Joi.string().required(),
+                    rooms: Joi.number().required(),
+                    state: Joi.string().required(),
+                }),
+            },
+        }});
+        server.route({ method: [ 'PUT' ], path: '/stays/{id}', handler: StayController.handler, options: {
+            auth: { mode: 'try' },
+            validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
+                payload: Joi.object({
+                    description: Joi.string(),
+                    rooms: Joi.string(),
+                    state: Joi.string(),
                 }),
             },
         }});

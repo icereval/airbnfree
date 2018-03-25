@@ -93,19 +93,4 @@ export class ClientStayController extends Controller {
             return StaySerializer(stay);
         }));
     }
-
-    // protected async put(): Promise<IHttpResponse> {
-    //     const id = +this.request.params.id;
-    //     const { felony, photo } = <any>this.request.payload;
-
-    //     // Authorization...
-
-    //     const client = await Client.update(<Client>{
-    //         id,
-    //         felony,
-    //         photo,
-    //     });
-
-    //     return new JsonResponse(ClientSerializer(client));
-    // }
 }
