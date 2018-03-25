@@ -51,9 +51,11 @@ export class Fixtures1521917223537 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.query(`DELETE FROM "user";`);
-        await queryRunner.query(`DELETE FROM "client";`);
-        await queryRunner.query(`DELETE FROM "host";`);
+        await queryRunner.query(`DELETE FROM "stay";`);
         await queryRunner.query(`DELETE FROM "location";`);
+        await queryRunner.query(`DELETE FROM "host";`);
+        await queryRunner.query(`DELETE FROM "client";`);
+        await queryRunner.query(`DELETE FROM "case_manager";`);
+        await queryRunner.query(`DELETE FROM "user";`);
     }
 }
