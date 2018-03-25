@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import {
   Form,
   Input,
@@ -19,7 +20,14 @@ class SignupForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Log in!');
+        const data = Object.assign({}, values, {
+          type: this.props.type,
+        });
+        this.props.signup(data).then((error) => {
+          if (!error) {
+            this.props.history.push('/dashboard');
+          }
+        });
       }
     });
   }
@@ -81,11 +89,15 @@ SignupForm.propTypes = {
     getFieldDecorator: PropTypes.func,
     validateFieldsAndScroll: PropTypes.func,
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   type: PropTypes.string.isRequired,
   goback: PropTypes.func.isRequired,
+  signup: PropTypes.func.isRequired,
 };
 
 
 const WrappedForm = Form.create()(SignupForm);
 
-export default WrappedForm;
+export default withRouter(WrappedForm);

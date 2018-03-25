@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import SignupStyles from './signup.style';
 import SignupForm from './SignupForm';
 import logo from '../../public/images/aribnfree-logo.png';
+import * as AuthActions from '../auth/authActions';
 
-export default class Signup extends Component {
+class Signup extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -28,9 +32,17 @@ export default class Signup extends Component {
   renderFormType() {
     switch (this.state.type) {
       case 'client':
-        return <SignupForm type="client" goback={this.goback} />;
+        return (<SignupForm
+          type="client"
+          goback={this.goback}
+          signup={this.props.signup}
+        />);
       case 'host':
-        return <SignupForm type="host" goback={this.goback} />;
+        return (<SignupForm
+          type="host"
+          goback={this.goback}
+          signup={this.props.signup}
+        />);
       default:
         return (
           <div className="signup-type">
@@ -74,3 +86,21 @@ export default class Signup extends Component {
   }
 }
 
+Signup.propTypes = {
+  signup: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Object.assign(
+    {},
+    AuthActions,
+  ), dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

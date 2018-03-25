@@ -29,17 +29,34 @@ export function login(email, password) {
       }),
     }).then(resp => resp.json())
       .then((response) => {
-        const {
-          body,
-          error,
-        } = response;
+        const { error } = response;
 
         if (error) {
-          dispatch(authEventError('LOGIN_REQUEST_FAILED'), error);
+          dispatch(authEventError('LOGIN_REQUEST_FAILED', error));
           return { error };
         }
-        dispatch(authEvent('LOGIN_REQUEST_SUCCESS'), body);
-        return { body };
+        dispatch(authEvent('LOGIN_REQUEST_SUCCESS', response));
+        return { response };
+      });
+  };
+}
+
+export function signup(event) {
+  return (dispatch) => {
+    dispatch(authEvent('SIGNUP_REQUEST'));
+
+    return fetch(`${API_URL}/signup`, {
+      method: 'PUT',
+      body: JSON.stringify(event),
+    }).then(resp => resp.json())
+      .then((response) => {
+        const { error } = response;
+        if (error) {
+          dispatch(authEventError('SIGNUP_REQUEST_FAILED', error));
+          return { error };
+        }
+        dispatch(authEvent('SIGNUP_REQUEST_SUCCESS', response));
+        return { response };
       });
   };
 }
@@ -52,17 +69,14 @@ export function logout() {
       method: 'DELETE',
     }).then(resp => resp.json())
       .then((response) => {
-        const {
-          body,
-          error,
-        } = response;
+        const { error } = response;
 
         if (error) {
-          dispatch(authEventError('LOGOUT_REQUEST_FAILURE'), error);
+          dispatch(authEventError('LOGOUT_REQUEST_FAILURE', error));
           return { error };
         }
-        dispatch(authEvent('LOGOUT_REQUEST_SUCCESS'), body);
-        return { body };
+        dispatch(authEvent('LOGOUT_REQUEST_SUCCESS', response));
+        return { response };
       });
   };
 }
