@@ -48,6 +48,7 @@ class ClientDashboard extends Component {
         <Requests
           title="Requested stays"
           stays={allRequests}
+          isUser
         />
         {locationsLoading ? <SmallLoader /> :
         <Locations

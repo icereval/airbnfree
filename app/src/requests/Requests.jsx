@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'antd';
 import RequestStyles from './requests.style';
 
 export default class Requests extends Component {
@@ -15,13 +16,7 @@ export default class Requests extends Component {
           </div> :
           <div className="locations-list">
             {stays.map(stay => (
-              <div
-                onClick={this.props.stayAction}
-                onKeyPress={this.props.stayAction}
-                role="presentation"
-                className="location-box"
-                key={stay.id}
-              >
+              <div className="location-box" key={stay.id}>
                 <h2>
                   {stay.client.user.firstName}
                   &nbsp; {stay.client.user.lastName}
@@ -33,6 +28,18 @@ export default class Requests extends Component {
                   <span>&#9733;</span>
                   <span>&#9733;</span>
                   <span>&#9733;</span>
+                </div>
+                <div className="buttons">
+                  {this.props.isUser ? null :
+                  <div>
+                    <Button onClick={this.props.requestAction}>
+                      Approve
+                    </Button>
+                    <Button onClick={this.props.denyAction}>
+                    Deny
+                    </Button>
+                  </div>
+                }
                 </div>
               </div>
             ))}
@@ -46,11 +53,15 @@ export default class Requests extends Component {
 Requests.propTypes = {
   title: PropTypes.string,
   stays: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  stayAction: PropTypes.func,
+  isUser: PropTypes.bool,
+  requestAction: PropTypes.func,
+  denyAction: PropTypes.func,
 };
 
 Requests.defaultProps = {
   title: '',
-  stayAction: () => {},
+  isUser: false,
+  requestAction: () => {},
+  denyAction: () => {},
 };
 

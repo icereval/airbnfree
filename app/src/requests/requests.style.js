@@ -24,16 +24,21 @@ const LocationStyles = styled.div`
     background-color: #fff;
   }
 
-  .location-box:hover {
-    cursor: pointer;
-  }
-
   .reviews {
     color: #03d4bf;
   }
 
   .reviews span {
     padding: 2px;
+  }
+
+  .buttons {
+    padding: 10px;
+    padding-left: 2px;
+  }
+
+  .buttons .ant-btn {
+    margin-right: 12px;
   }
 `;
 
