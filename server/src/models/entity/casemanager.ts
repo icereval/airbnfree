@@ -51,7 +51,7 @@ export class CaseManager {
             .innerJoinAndMapOne('client.user', User, 'clientUser', 'clientUser.id = client.user')
             .innerJoinAndMapOne('stay.location', Location, 'location', 'location.id = stay.location')
             .innerJoinAndMapOne('location.host', Host, 'host', 'host.id = location.host')
-            .innerJoinAndMapOne('host.user', User, 'hostUser', 'hostUser.id = host.user')
+            .innerJoinAndMapOne('host.user', User, 'hostUser', 'hostUser.id = host.user');
             // .where('stay.state in :states')
             // .setParameter('states', [ 'host-approved', 'host-denied', 'casemanager-approved', 'casemanager-denied' ]);
 
