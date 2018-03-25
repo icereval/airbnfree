@@ -16,6 +16,9 @@ class CaseManagerDashboard extends Component {
     this.state = {
       requestsLoaded: false,
     };
+
+    this.acceptRequest = this.acceptRequest.bind(this);
+    this.denyRequest = this.denyRequest.bind(this);
   }
 
   componentDidMount() {
@@ -28,6 +31,14 @@ class CaseManagerDashboard extends Component {
       this.props.getCaseManagerStays(nextProps.user.loaded.caseManager.id);
       this.setState({ requestsLoaded: true });
     }
+  }
+
+  acceptRequest(id) {
+    this.props.changeStayState(id, 'casemanager-approved');
+  }
+
+  denyRequest(id) {
+    this.props.changeStayState(id, 'casemanager-denied');
   }
 
   render() {
@@ -49,6 +60,8 @@ class CaseManagerDashboard extends Component {
         <Requests
           title="Requests for stays"
           stays={requests.caseManagerStays}
+          requestAction={this.acceptRequest}
+          denyAction={this.denyRequest}
         />
         {locationsLoading ? <SmallLoader /> :
         <div>
@@ -83,6 +96,7 @@ CaseManagerDashboard.propTypes = {
   }).isRequired,
   getLocations: PropTypes.func.isRequired,
   getCaseManagerStays: PropTypes.func.isRequired,
+  changeStayState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

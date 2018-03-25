@@ -4,6 +4,18 @@ import { Button } from 'antd';
 import RequestStyles from './requests.style';
 
 export default class Requests extends Component {
+  getApproval(approval) {
+    switch (approval) {
+      case 'casemanager-approved':
+        return 'approved';
+      case 'casemanager-denied':
+      case 'host-denied':
+        return 'denied';
+      default:
+        return 'pending';
+    }
+  }
+
   render() {
     const { stays } = this.props;
 
@@ -16,11 +28,17 @@ export default class Requests extends Component {
           </div> :
           <div className="locations-list">
             {stays.map(stay => (
-              <div className="location-box" key={stay.id}>
+              <div
+                className={`location-box ${this.getApproval(stay.state)}`}
+                key={stay.id}
+              >
                 <h2>
                   {stay.client.user.firstName}
                   &nbsp; {stay.client.user.lastName}
                 </h2>
+                <h3>
+                  {stay.location.name}
+                </h3>
                 <p>{stay.description}</p>
                 <div className="reviews">
                   <span>&#9733;</span>
@@ -32,10 +50,10 @@ export default class Requests extends Component {
                 <div className="buttons">
                   {this.props.isUser ? null :
                   <div>
-                    <Button onClick={this.props.requestAction}>
+                    <Button onClick={() => { this.props.requestAction(stay.id); }}>
                       Approve
                     </Button>
-                    <Button onClick={this.props.denyAction}>
+                    <Button onClick={() => { this.props.denyAction(stay.id); }}>
                     Deny
                     </Button>
                   </div>

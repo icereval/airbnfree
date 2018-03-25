@@ -10,6 +10,18 @@ const LocationStyles = styled.div`
     color: #03d4bf;
   }
 
+  .approved h2 {
+    color: #03d4bf
+  }
+
+  .denied h2 {
+    color: #ff5a5f;
+  }
+
+  .pending h2 {
+    color: #ffc05a;
+  }
+
   .locations-list {
     display: flex;
   }

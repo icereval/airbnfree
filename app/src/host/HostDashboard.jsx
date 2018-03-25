@@ -15,6 +15,9 @@ class HostDashboard extends Component {
     this.state = {
       requestsLoaded: false,
     };
+
+    this.acceptRequest = this.acceptRequest.bind(this);
+    this.denyRequest = this.denyRequest.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +30,14 @@ class HostDashboard extends Component {
       this.props.getHostStays(nextProps.user.loaded.host.id);
       this.setState({ requestsLoaded: true });
     }
+  }
+
+  acceptRequest(id) {
+    this.props.changeStayState(id, 'host-approved');
+  }
+
+  denyRequest(id) {
+    this.props.changeStayState(id, 'host-denied');
   }
 
   render() {
@@ -47,6 +58,8 @@ class HostDashboard extends Component {
         <Requests
           title="Review requests for your locations"
           stays={requests.hostStays}
+          requestAction={this.acceptRequest}
+          denyAction={this.denyRequest}
         />
         {locationsLoading ? <SmallLoader /> :
         <Locations
@@ -75,6 +88,7 @@ HostDashboard.propTypes = {
   }).isRequired,
   getLocations: PropTypes.func.isRequired,
   getHostStays: PropTypes.func.isRequired,
+  changeStayState: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {

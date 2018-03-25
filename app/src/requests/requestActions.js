@@ -63,9 +63,9 @@ export function getCaseManagerStays(id) {
 
 export function changeStayState(id, state) {
   return (dispatch) => {
-    dispatch(requestEvent(types.CHANGE_STAY));
+    dispatch(requestEvent(types.CHANGE_STAY_REQUEST));
 
-    return fetch(`${API_URL}/stays${id}`, {
+    return fetch(`${API_URL}/stays/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ state }),
       credentials: 'include',
