@@ -41,7 +41,7 @@ export class CaseManagerController extends Controller {
 
     protected async put(): Promise<IHttpResponse> {
         const id = +this.request.params.id;
-        const { felony, photo } = <any>this.request.payload;
+        const { photo } = <any>this.request.payload;
 
         // Authorization...
 

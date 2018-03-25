@@ -44,6 +44,9 @@ export default class Routes {
         server.route({ method: [ 'PUT' ], path: '/casemanagers/{id}', handler: CaseManagerController.handler, options: {
             auth: { mode: 'try' },
             validate: {
+                params: {
+                    id: Joi.number().required(),
+                },
                 payload: Joi.object({
                     photo: Joi.string(),
                 }),
