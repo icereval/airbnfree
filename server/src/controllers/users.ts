@@ -26,7 +26,7 @@ export function UserSerializer(user: User): Object {
         (<any>obj).host = HostSerializer(user.host);
     }
     if (user.caseManager) {
-        (<any>obj).casemanager = CaseManagerSerializer(user.caseManager);
+        (<any>obj).caseManager = CaseManagerSerializer(user.caseManager);
     }
 
     return obj;
