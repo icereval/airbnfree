@@ -17,13 +17,12 @@
 ### Install and Run
 
 - `yarn install`
+- `yarn resetdb`
 - `yarn start`
 
 ### Migrations
 
-- `yarn run migrate schema:sync`
-- `yarn run migrate migrations:create`
-- `yarn run migrate migrations:run`
+- `yarn orm migrations:run`
 
 ### API
 
@@ -37,10 +36,3 @@ Sign Up | `POST` | `/signup`
 Show User Info | `GET` | `/users/{id}`
 Show My User Info | `GET` | `/users/me`
 Update My User Info | `PUT` | `/users/me`
-
-## WebApp
-
-- `yarn install`
-- `npm start`
-
-Local Server: http://localhost:3000/
