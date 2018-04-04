@@ -32,10 +32,6 @@ export function HostSerializer(host: Host): Object {
 
 export class HostController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new HostController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;
 
@@ -68,10 +64,6 @@ export class HostController extends Controller {
 
 export class HostListController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new HostListController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const repo = TypeOrm.getConnection().getRepository(Host);
         const hosts = await repo.find({ relations: [ 'user' ] });
@@ -83,10 +75,6 @@ export class HostListController extends Controller {
 }
 
 export class HostLocationListController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new HostLocationListController(request, h).handleInternal();
-    }
 
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;
@@ -104,10 +92,6 @@ export class HostLocationListController extends Controller {
 }
 
 export class HostStayController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new HostStayController(request, h).handleInternal();
-    }
 
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;

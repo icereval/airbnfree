@@ -25,10 +25,6 @@ export function ClientSerializer(client: Client): Object {
 
 export class ClientController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new ClientController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;
 
@@ -59,10 +55,6 @@ export class ClientController extends Controller {
 
 export class ClientListController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new ClientListController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const repo = TypeOrm.getConnection().getRepository(Client);
         const clients = await repo.find({ relations: [ 'user' ] });
@@ -74,10 +66,6 @@ export class ClientListController extends Controller {
 }
 
 export class ClientStayController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new ClientStayController(request, h).handleInternal();
-    }
 
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;

@@ -29,10 +29,6 @@ export function LocationSerializer(location: Location): Object {
 
 export class LocationController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new LocationController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;
 
@@ -72,10 +68,6 @@ export class LocationController extends Controller {
 }
 
 export class LocationListController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new LocationListController(request, h).handleInternal();
-    }
 
     protected async get(): Promise<IHttpResponse> {
         const repo = TypeOrm.getConnection().getRepository(Location);

@@ -1,5 +1,6 @@
 import * as Hapi from 'hapi';
 import * as Joi from 'joi';
+import { Controller } from './controllers/base';
 import { AuthLoginController, AuthLogoutController, AuthSignUpController } from './controllers/auth';
 import { CaseManagerController, CaseManagerListController, CaseManagerStayController } from './controllers/casemanagers';
 import { ClientController, ClientListController, ClientStayController } from './controllers/clients';
@@ -11,7 +12,7 @@ import { StayController } from './controllers/stays';
 export default class Routes {
 
     public static async init(server: Hapi.Server): Promise<void> {
-        server.route({ method: [ 'POST' ], path: '/login', handler: AuthLoginController.handler, options: {
+        server.route({ method: [ 'POST' ], path: '/login', handler: Controller.handler(AuthLoginController), options: {
             validate: {
                 payload: Joi.object({
                     email: Joi.string().required(),
@@ -19,8 +20,8 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'DELETE' ], path: '/logout', handler: AuthLogoutController.handler });
-        server.route({ method: [ 'POST' ], path: '/signup', handler: AuthSignUpController.handler, options: {
+        server.route({ method: [ 'DELETE' ], path: '/logout', handler: Controller.handler(AuthLogoutController) });
+        server.route({ method: [ 'POST' ], path: '/signup', handler: Controller.handler(AuthSignUpController), options: {
             validate: {
                 payload: Joi.object({
                     email: Joi.string().required(),
@@ -32,8 +33,8 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'GET' ], path: '/casemanagers', handler: CaseManagerListController.handler, options: { auth: { mode: 'try' } } });
-        server.route({ method: [ 'GET' ], path: '/casemanagers/{id}', handler: CaseManagerController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/casemanagers', handler: Controller.handler(CaseManagerListController), options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/casemanagers/{id}', handler: Controller.handler(CaseManagerController), options: {
             auth: { mode: 'try' },  // required
             validate: {
                 params: {
@@ -41,7 +42,7 @@ export default class Routes {
                 },
             },
         }});
-        server.route({ method: [ 'PUT' ], path: '/casemanagers/{id}', handler: CaseManagerController.handler, options: {
+        server.route({ method: [ 'PUT' ], path: '/casemanagers/{id}', handler: Controller.handler(CaseManagerController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -52,7 +53,7 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'GET' ], path: '/casemanagers/{id}/stays', handler: CaseManagerStayController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/casemanagers/{id}/stays', handler: Controller.handler(CaseManagerStayController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -61,8 +62,8 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'GET' ], path: '/clients', handler: ClientListController.handler, options: { auth: { mode: 'try' } } });
-        server.route({ method: [ 'GET' ], path: '/clients/{id}', handler: ClientController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/clients', handler: Controller.handler(ClientListController), options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/clients/{id}', handler: Controller.handler(ClientController), options: {
             auth: { mode: 'try' },  // required
             validate: {
                 params: {
@@ -70,7 +71,7 @@ export default class Routes {
                 },
             },
         }});
-        server.route({ method: [ 'PUT' ], path: '/clients/{id}', handler: ClientController.handler, options: {
+        server.route({ method: [ 'PUT' ], path: '/clients/{id}', handler: Controller.handler(ClientController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -82,7 +83,7 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'GET' ], path: '/clients/{id}/stays', handler: ClientStayController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/clients/{id}/stays', handler: Controller.handler(ClientStayController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -91,8 +92,8 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'GET' ], path: '/hosts', handler: HostListController.handler, options: { auth: { mode: 'try' } } });
-        server.route({ method: [ 'GET' ], path: '/hosts/{id}', handler: HostController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/hosts', handler: Controller.handler(HostListController), options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/hosts/{id}', handler: Controller.handler(HostController), options: {
             auth: { mode: 'try' },  // required
             validate: {
                 params: {
@@ -100,7 +101,7 @@ export default class Routes {
                 },
             },
         }});
-        server.route({ method: [ 'PUT' ], path: '/hosts/{id}', handler: HostController.handler, options: {
+        server.route({ method: [ 'PUT' ], path: '/hosts/{id}', handler: Controller.handler(HostController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -114,7 +115,7 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'GET' ], path: '/hosts/{id}/locations', handler: HostLocationListController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/hosts/{id}/locations', handler: Controller.handler(HostLocationListController), options: {
             auth: { mode: 'try' },  // required
             validate: {
                 params: {
@@ -122,7 +123,7 @@ export default class Routes {
                 },
             },
         }});
-        server.route({ method: [ 'GET' ], path: '/hosts/{id}/stays', handler: HostStayController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/hosts/{id}/stays', handler: Controller.handler(HostStayController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -131,8 +132,8 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'GET' ], path: '/locations', handler: LocationListController.handler, options: { auth: { mode: 'try' } } });
-        server.route({ method: [ 'GET' ], path: '/locations/{id}', handler: LocationController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/locations', handler: Controller.handler(LocationListController), options: { auth: { mode: 'try' } } });
+        server.route({ method: [ 'GET' ], path: '/locations/{id}', handler: Controller.handler(LocationController), options: {
             auth: { mode: 'try' },  // required
             validate: {
                 params: {
@@ -140,7 +141,7 @@ export default class Routes {
                 },
             },
         }});
-        server.route({ method: [ 'PUT' ], path: '/locations/{id}', handler: LocationController.handler, options: {
+        server.route({ method: [ 'PUT' ], path: '/locations/{id}', handler: Controller.handler(LocationController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -160,7 +161,7 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'POST' ], path: '/stays', handler: StayController.handler, options: {
+        server.route({ method: [ 'POST' ], path: '/stays', handler: Controller.handler(StayController), options: {
             validate: {
                 payload: Joi.object({
                     client: Joi.number().required(),
@@ -171,7 +172,7 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'PUT' ], path: '/stays/{id}', handler: StayController.handler, options: {
+        server.route({ method: [ 'PUT' ], path: '/stays/{id}', handler: Controller.handler(StayController), options: {
             auth: { mode: 'try' },
             validate: {
                 params: {
@@ -185,8 +186,8 @@ export default class Routes {
             },
         }});
 
-        server.route({ method: [ 'GET' ], path: '/users/me', handler: UserMeController.handler, options: { auth: { mode: 'required' } } });
-        server.route({ method: [ 'PUT' ], path: '/users/me', handler: UserMeController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/users/me', handler: Controller.handler(UserMeController), options: { auth: { mode: 'required' } } });
+        server.route({ method: [ 'PUT' ], path: '/users/me', handler: Controller.handler(UserMeController), options: {
             auth: { mode: 'required' },
             validate: {
                 payload: Joi.object({
@@ -199,7 +200,7 @@ export default class Routes {
                 }),
             },
         }});
-        server.route({ method: [ 'GET' ], path: '/users/{id}', handler: UserController.handler, options: {
+        server.route({ method: [ 'GET' ], path: '/users/{id}', handler: Controller.handler(UserController), options: {
             auth: { mode: 'try' },  // required
             validate: {
                 params: {

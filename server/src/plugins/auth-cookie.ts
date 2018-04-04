@@ -35,11 +35,11 @@ export default class AuthCookiePlugin {
                         .getOne();
 
                     if (!entity) {
-                        logger.debug('session.id %d could not be found', session.id);
+                        // logger.debug('session.id %d could not be found', session.id);
                         return { valid: false };
                     }
 
-                    logger.debug('session.id %d loaded', session.id);
+                    // logger.debug('session.id %d loaded', session.id);
                     return { valid: true, credentials: entity };
                 } catch (err) {
                     return { valid: false };

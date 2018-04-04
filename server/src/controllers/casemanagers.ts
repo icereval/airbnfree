@@ -23,10 +23,6 @@ export function CaseManagerSerializer(caseManager: CaseManager): Object {
 
 export class CaseManagerController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new CaseManagerController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;
 
@@ -56,10 +52,6 @@ export class CaseManagerController extends Controller {
 
 export class CaseManagerListController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new CaseManagerListController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const repo = TypeOrm.getConnection().getRepository(CaseManager);
         const caseManagers = await repo.find({ relations: [ 'user' ] });
@@ -71,10 +63,6 @@ export class CaseManagerListController extends Controller {
 }
 
 export class CaseManagerStayController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new CaseManagerStayController(request, h).handleInternal();
-    }
 
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;

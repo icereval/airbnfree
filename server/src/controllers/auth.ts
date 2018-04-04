@@ -10,10 +10,6 @@ import { UserSerializer } from './users';
 
 export class AuthLoginController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new AuthLoginController(request, h).handleInternal();
-    }
-
     protected async post(): Promise<IHttpResponse> {
         const { email, password } = <any>this.request.payload;
 
@@ -38,10 +34,6 @@ export class AuthLoginController extends Controller {
 
 export class AuthLogoutController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new AuthLogoutController(request, h).handleInternal();
-    }
-
     protected async delete(): Promise<IHttpResponse> {
         // TODO: cleanup session data
         (<any>this.request).cookieAuth.clear();
@@ -50,10 +42,6 @@ export class AuthLogoutController extends Controller {
 }
 
 export class AuthSignUpController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new AuthSignUpController(request, h).handleInternal();
-    }
 
     protected async post(): Promise<IHttpResponse> {
         const { email, password, firstName, lastName, type } = <any>this.request.payload;

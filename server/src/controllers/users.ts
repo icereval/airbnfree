@@ -34,10 +34,6 @@ export function UserSerializer(user: User): Object {
 
 export class UserController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new UserController(request, h).handleInternal();
-    }
-
     protected async get(): Promise<IHttpResponse> {
         const id = this.request.params.id;
 
@@ -52,10 +48,6 @@ export class UserController extends Controller {
 }
 
 export class UserMeController extends Controller {
-
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new UserMeController(request, h).handleInternal();
-    }
 
     protected async get(): Promise<IHttpResponse> {
         const session = <Session>this.request.auth.credentials;

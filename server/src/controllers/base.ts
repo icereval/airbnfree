@@ -52,34 +52,40 @@ export class HttpResponseRedirect extends HttpResponse {
 
 export class JsonResponse extends HttpResponse {}
 
-export abstract class Controller {
+export interface IController {
+    handleInternal(): Promise<Hapi.Lifecycle.ReturnValue>;
+}
 
-    protected request: Hapi.Request;
-    protected h: Hapi.ResponseToolkit;
+export abstract class Controller implements IController {
 
-    constructor(request: Hapi.Request, h: Hapi.ResponseToolkit) {
-        this.request = request;
-        this.h = h;
+    static handler(ctor: { new (request: Hapi.Request, h: Hapi.ResponseToolkit): IController }): { (request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> } {
+        return (request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> => {
+            return new ctor(request, h).handleInternal();
+        };
     }
 
-    protected async handleInternal(): Promise<Hapi.Lifecycle.ReturnValue> {
+    constructor(protected request: Hapi.Request, protected h: Hapi.ResponseToolkit) { }
+
+    async handleInternal(): Promise<Hapi.Lifecycle.ReturnValue> {
         const method = this.request.method;
 
         try {
-            let response;
-            if (method === 'delete') {
-                response = await this.delete();
-            } else if (method === 'get') {
-                response = await this.get();
-            } else if (method === 'patch') {
-                response = await this.patch();
-            } else if (method === 'post') {
-                response = await this.post();
-            } else if (method === 'put') {
-                response = await this.put();
-            } else {
-                throw Boom.notImplemented();
-            }
+            const response = await (async () => {
+                switch (method) {
+                    case 'delete':
+                        return await this.delete();
+                    case 'get':
+                        return await this.get();
+                    case 'patch':
+                        return await this.patch();
+                    case 'post':
+                        return await this.post();
+                    case 'put':
+                        return await this.put();
+                    default:
+                        throw Boom.notImplemented();
+                }
+            })();
 
             return this.responseHandler(response);
         } catch (err) {

@@ -31,10 +31,6 @@ export function StaySerializer(stay: Stay): Object {
 
 export class StayController extends Controller {
 
-    static async handler(request: Hapi.Request, h: Hapi.ResponseToolkit): Promise<Hapi.Lifecycle.ReturnValue> {
-        return await new StayController(request, h).handleInternal();
-    }
-
     protected async post(): Promise<IHttpResponse> {
         const { client, location, description, rooms, state } = <any>this.request.payload;
 
