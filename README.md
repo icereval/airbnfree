@@ -1,7 +1,7 @@
 # Aribnfree
 > Hackathon project for the [Southeast startup challenge](http://southeaststartupchallenge.com/) 
 
-Airbnfree helps match peopel that need housing with people willing to put up someone for the night. This process coincides with federal housing assistance programs for people in need.
+Airbnfree helps match people that need housing with people willing to put up someone for the night. This process coincides with federal housing assistance programs for people in need.
 
 ## Installing / Getting started
 
